@@ -1,0 +1,1 @@
+minify --output ./tides.min.js --no-comments ./init.js ./map.js ./flow.js ./canvas.js 
