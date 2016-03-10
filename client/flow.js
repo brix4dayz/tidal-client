@@ -44,7 +44,7 @@ function requestTides() {
   // var canvas = document.getElementById("tideCanvas");
   // var context = canvas.getContext("2d");
 
-  console.log("Hello!");
+  //console.log("Hello!");
   context.clearRect(0,0,clearWidth,clearHeight);
   context.fillStyle = "#ffffff";
   context.fillRect(0,0,clearWidth,clearHeight);

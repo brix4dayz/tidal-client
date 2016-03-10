@@ -217,7 +217,7 @@ function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight)
 		var month = options.beginDate.slice(4,6);
 		var day = options.beginDate.slice(6,8);
 		var location = options.location
-		console.log(location.length);
+		//console.log(location.length);
 		if (location.length > 30){
 			context.font = "20px Sans Serif";
 		};
