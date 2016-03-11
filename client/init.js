@@ -1,6 +1,6 @@
 //console.log(STATE);
 
-const SERVER = "http://45.33.68.196:8000";
+const SERVER = "//45.33.68.196:8000";
 
 $('#tideApp').append("\
     <div class=\"container\" id=\"firstPage\">\
