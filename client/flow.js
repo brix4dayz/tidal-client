@@ -61,7 +61,7 @@ function requestTides() {
       }
       requestCache[options['location'] + options["beginDate"] + options["endDate"]] = $.ajax({
         type: "POST",
-        url: "http://localhost:8000/tides",
+        url: SERVER + "/tides",
         contentType: "application/json",
         crossDomain: true,
         data: JSON.stringify(options),

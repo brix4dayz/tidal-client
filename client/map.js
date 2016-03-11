@@ -31,7 +31,7 @@ function map() {
 	streetViewControl:false
     });
 
-    $.getJSON("http://localhost:8000/locations", 
+    $.getJSON(SERVER + "/locations", 
 
         function (data) {
 
