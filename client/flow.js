@@ -19,11 +19,11 @@ const PLOT_TIME = 1.0;
 var first = true;
 
 
-var chartHeight = 500;
-var chartWidth = 700;
+var chartHeight = 325;
+var chartWidth = 400;
 
 var clearHeight = chartHeight + 50;
-var clearWidth = chartWidth + 50;
+var clearWidth = chartWidth + 60;
 
 //grab div
 //all work is applied to the context object
@@ -51,7 +51,7 @@ function requestTides() {
   context.fillStyle = "#000000";
   context.font= "18px Sans Serif";
   context.textAlign = "left";
-  context.fillText("Loading...", 325, 225);
+  context.fillText("Loading...", 225, 125);
 
   // Make the POST request
   if (!requestCache[options['location'] + options["beginDate"] + options["endDate"]]) {
