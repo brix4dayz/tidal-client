@@ -23,8 +23,8 @@ $('#tideApp').append("\
           </div>\
     </div>\
     <div class=\"container\" id=\"secondPage\">\
-    <button type=\"button\" id=\"returnBtn\">Get More Tides</button>\
-      <canvas width=\"550\" height=\"375\" id=\"tideCanvas\"></canvas>\
+    <p class=\"btn btn-info btn-sm\" id=\"returnBtn\">Get More Tides</p>\
+      <canvas width=\"750\" height=\"550\" id=\"tideCanvas\"></canvas>\
     </div>");
 
 $('body').append("\
