@@ -107,14 +107,14 @@ function drawAxis(context, options, tideData, maxVal, minVal){
 		} else {
 			context.fillStyle = "#fbfdfb";
 		}
-		context.fillRect(51, gridBar*chartHeight/barCount + 25, chartWidth, chartHeight/barCount);
+		context.fillRect(leftMarg+1, gridBar*chartHeight/barCount + topMarg, chartWidth, chartHeight/barCount);
 	}
-	var zeroLine = (chartHeight*maxVal)/(barCount*.25)+25;
+	var zeroLine = (chartHeight*maxVal)/(barCount*.25)+topMarg;
 	context.beginPath();
-	context.moveTo(50, 25);
-	context.lineTo(50, chartHeight + 25);
-	context.moveTo(50, zeroLine);
-	context.lineTo(chartWidth + 50, zeroLine);
+	context.moveTo(leftMarg, topMarg);
+	context.lineTo(leftMarg, chartHeight + topMarg);
+	context.moveTo(leftMarg, zeroLine);
+	context.lineTo(chartWidth + leftMarg, zeroLine);
 	context.lineWidth = 2;
 	context.strokeStyle = "#092643";
 	context.stroke();
@@ -133,14 +133,15 @@ function plotData(context, options, tideData, chartHeight, chartWidth, zeroLine,
 	var dataLength = frac * tideData.length;
 	var ttlLength = tideData.length;
 	context.strokeStyle = "black";
+	context.lineWidth = 1;
 	context.beginPath();
-	context.moveTo(51, zeroLine - tideData[0]["pred"]*4*500/barCount);
+	context.moveTo(leftMarg+1, zeroLine - tideData[0]["pred"]*4*chartHeight/barCount);
 	j=0;
 	context.fillStyle = "#a0abb6";
 	for (var i=0; i<dataLength; i++) {
-		context.lineTo(chartWidth/ttlLength*j + 51, zeroLine- tideData[i]["pred"]*4*500/barCount);
+		context.lineTo(chartWidth/ttlLength*j + leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount);
 		context.stroke();
-		context.fillRect(chartWidth/ttlLength*j + 51, zeroLine- tideData[i]["pred"]*4*500/barCount, 3, tideData[i]["pred"]*4*500/barCount-1);
+		context.fillRect(chartWidth/ttlLength*j + leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount, 1, tideData[i]["pred"]*4*chartHeight/barCount-1);
 		j++;
 	}
 	labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth);
@@ -150,24 +151,24 @@ function labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barC
 	//Put chart label//
 	context.fillStyle= "#092643";
 	context.font= "17px Sans Serif";
-	context.fillText("Feet", 60, 60);
+	context.fillText("Feet", leftMarg*1.8, topMarg*2.5);
 	//Put Y axis label//
-	context.font = "16px Sans Serif";
+	context.font = "14px Sans Serif";
 	context.textAlign = "right";
 	//Put some ticks, numbers on the y axis
-	context.strokeStyle = "#092643";
+	context.strokeStyle = "black";
 	for (var yTick = 0; yTick <= maxVal; yTick+=.25){
-		context.fillText(yTick, 42, zeroLine - 4*yTick * chartHeight/barCount);
+		context.fillText(yTick, leftMarg-8, zeroLine - 4*yTick * chartHeight/barCount+.2*topMarg);
 		context.beginPath();
-		context.moveTo(50, zeroLine -4*yTick*chartHeight/barCount);
-		context.lineTo(55, zeroLine -4*yTick*chartHeight/barCount);
+		context.moveTo(leftMarg, zeroLine -4*yTick*chartHeight/barCount);
+		context.lineTo(leftMarg+.1*leftMarg, zeroLine -4*yTick*chartHeight/barCount);
 		context.stroke();
 	}
 	for (var yNTick = minVal; yNTick < 0; yNTick+=.25){
-		context.fillText(yNTick, 42, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.fillText(yNTick, leftMarg-8, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.beginPath();
-		context.moveTo(50, zeroLine - 4*yNTick* chartHeight/barCount);
-		context.lineTo(55, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.moveTo(leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.lineTo(leftMarg+.1*leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.stroke();
 	}
 	timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight);
@@ -178,66 +179,48 @@ function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight)
 	//If one day, we describe the time every two hours
 	//If multDats, we describe noon and 12am
 	if (tideData.length == 240) {
-		context.font = "24px Sans Serif";
-		context.textAlign = "left";
-		context.fillStyle = "#012c57";
-		var year = options.beginDate.slice(0,4);
-		var month = options.beginDate.slice(4,6);
-		var day = options.beginDate.slice(6,8);
-		var location = options.location
-		context.fillText("Tides for: "+location + " - " + month + '/' + day + '/' + year, 52, 20);
-		context.font = "15px Sans Serif";
+		context.font = "12px Sans Serif";
 		context.strokeStyle = "#092643";
 		context.fillStyle = "#092643";
-		context.textAlign = "right";
+		context.textAlign = "center";
 		for (var xTick = 1; xTick < 12; xTick++){
 			context.beginPath();
-			context.moveTo(50 + xTick*chartWidth/12, zeroLine);
-			context.lineTo(65 + xTick*chartWidth/12, zeroLine+15);
+			context.moveTo(leftMarg + xTick*chartWidth/12, zeroLine);
+			context.lineTo(leftMarg+.32*leftMarg + xTick*chartWidth/12, zeroLine+topMarg*.6);
 			context.stroke();
 			context.closePath();
 			context.beginPath();
-			context.arc(50 + xTick*chartWidth/12, zeroLine, 3, 0, 2*Math.PI, true);
+			context.arc(leftMarg + xTick*chartWidth/12, zeroLine, 3, 0, 2*Math.PI, true);
 			context.closePath();
 			context.fill();
 			if (xTick < 6){
-				context.fillText(xTick*2+"AM", 84+xTick*chartWidth/12, zeroLine+30);
+				context.fillText(xTick*2+"AM", leftMarg*1.6+xTick*chartWidth/12, zeroLine+topMarg*1.2);
 			} else if (xTick == 6){
-				context.fillText(xTick*2+"PM", 84+xTick*chartWidth/12, zeroLine+30);
+				context.fillText(xTick*2+"PM", leftMarg*1.6+xTick*chartWidth/12, zeroLine+topMarg*1.2);
 			}
 			else{
-				context.fillText(xTick%6*2+"PM", 84+xTick*chartWidth/12, zeroLine+30);
+				context.fillText(xTick%6*2+"PM", leftMarg*1.6+xTick*chartWidth/12, zeroLine+topMarg*1.2);
 			}
 		}
 	} else {
-		context.font= "24px Sans Serif";
-		context.textAlign = "left";
-		context.fillStyle = "#012c57";
-		var year = options.beginDate.slice(0,4);
-		var month = options.beginDate.slice(4,6);
-		var day = options.beginDate.slice(6,8);
-		var location = options.location
-		//console.log(location.length);
-		if (location.length > 30){
-			context.font = "20px Sans Serif";
-		};
-		var year2 = options.endDate.slice(0,4);
-		var month2 = options.endDate.slice(4,6);
-		var day2 = options.endDate.slice(6,8);
-		context.fillText("Tides for: " + location + " - " + month + '/' + day + '/' + year + " to- " + month2 + '/' + day2 + '/' + year2, 52, 20);
-		context.font= "15px Sans Serif";
+		context.font= "12px Sans Serif";
 		context.fillStyle = "#092643";
 		var numDays = tideData.length/240;
-		context.textAlign = "right";
+		context.textAlign = "center";
 		for(var n=0; n < numDays; n+=.5){
 			context.beginPath();
-			context.moveTo(50 + n*chartWidth/numDays, zeroLine);
-			context.lineTo(55 + n*chartWidth/numDays, zeroLine+15);
+			context.moveTo(leftMarg + n*chartWidth/numDays, zeroLine);
+			context.lineTo(leftMarg+.2*leftMarg + n*chartWidth/numDays, zeroLine+topMarg*.6);
 			context.stroke();
+			context.closePath();
+			context.beginPath();
+			context.arc(leftMarg + n*chartWidth/numDays, zeroLine, 3, 0, 2*Math.PI, true);
+			context.closePath();
+			context.fill();
 			if ((n%1)==0){
-				context.fillText("12AM", 90 + n*chartWidth/numDays, zeroLine + 30);
+				context.fillText("12AM", leftMarg*1.5 + n*chartWidth/numDays, zeroLine + topMarg*1.2);
 			} else {
-				context.fillText("Noon", 90 + n*chartWidth/numDays, zeroLine + 30);
+				context.fillText("Noon", leftMarg*1.5 + n*chartWidth/numDays, zeroLine + topMarg*1.2);
 			}
 		}
 	}

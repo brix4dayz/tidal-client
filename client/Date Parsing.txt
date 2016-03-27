@@ -1,0 +1,28 @@
+Date parsing Notes incase I want to put it back in
+
+One day
+		context.font = "22px Sans Serif";
+		context.textAlign = "left";
+		context.fillStyle = "#012c57";
+		var year = options.beginDate.slice(0,4);
+		var month = options.beginDate.slice(4,6);
+		var day = options.beginDate.slice(6,8);
+		var location = options.location
+		context.fillText("Tides for: "+location + " - " + month + '/' + day + '/' + year, leftMarg+2, topMarg-5);
+		
+Mult days		
+				context.font= "22px Sans Serif";
+		context.textAlign = "left";
+		context.fillStyle = "#012c57";
+		var year = options.beginDate.slice(0,4);
+		var month = options.beginDate.slice(4,6);
+		var day = options.beginDate.slice(6,8);
+		var location = options.location
+		//console.log(location.length);
+		if (location.length > 30){
+			context.font = "20px Sans Serif";
+		};
+		var year2 = options.endDate.slice(0,4);
+		var month2 = options.endDate.slice(4,6);
+		var day2 = options.endDate.slice(6,8);
+		context.fillText("Tides for: " + location + " - " + month + '/' + day + '/' + year + " to- " + month2 + '/' + day2 + '/' + year2, leftMarg+2, topMarg-5);

@@ -19,11 +19,13 @@ const PLOT_TIME = 1.0;
 var first = true;
 
 
-var chartHeight = 500;
-var chartWidth = 700;
+var chartHeight = 350;
+var chartWidth = 490;
+var leftMarg = chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
+var topMarg = chartHeight /18; //offset btwn top of canvas and top of chart; replaces 25's
 
-var clearHeight = chartHeight + 50;
-var clearWidth = chartWidth + 50;
+var clearHeight = chartHeight + topMarg;
+var clearWidth = chartWidth + leftMarg;
 
 //grab div
 //all work is applied to the context object
@@ -50,8 +52,8 @@ function requestTides() {
   context.fillRect(0,0,clearWidth,clearHeight);
   context.fillStyle = "#000000";
   context.font= "18px Sans Serif";
-  context.textAlign = "left";
-  context.fillText("Loading...", 325, 225);
+  context.textAlign = "center";
+  context.fillText("Loading...", chartHeight*.5, chartWidth*.5);
 
   // Make the POST request
   if (!requestCache[options['location'] + options["beginDate"] + options["endDate"]]) {
@@ -103,7 +105,8 @@ Date.prototype.noaaDate = function () {
 var isMultipleDays = false;
 
 /** Hide canvas and return button. */
-$('#secondPage').hide();
+$('#plotter').hide();
+$('#returnBtn').hide();
 
 /**
 *This page organizes the sequence of our app
@@ -185,8 +188,9 @@ $('#getTides').on('click', function(){
 		}
 		if (goAhead){
 			requestTides(options);
-			$('#firstPage').slideUp(1000);
-			$('#secondPage').show();
+			$('#map').hide();
+			$('#plotter').show();
+			$('#returnBtn').show();
 		};
 	} else {
 		//if no location
@@ -197,8 +201,9 @@ $('#getTides').on('click', function(){
 //Immediately clear canvas upon selecting get more tides
 $('#returnBtn').on('click', function() {
 		stop = true;
-		$('#firstPage').slideDown();
-		$('#secondPage').hide();
+		$('#map').show();
+		$('#plotter').hide();
+		$('#returnBtn').hide();
 });
 
 /**

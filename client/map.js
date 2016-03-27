@@ -23,7 +23,7 @@ var selectedKey = null;
 
 function map() {
   
-    var myLatLng = {lat: 30.220552, lng: -91.600674};
+    var myLatLng = {lat: 30.220552, lng: -91.380674};
 
     var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
