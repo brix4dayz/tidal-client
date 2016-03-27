@@ -190,7 +190,7 @@ $('#getTides').on('click', function(){
 			requestTides(options);
 			$('#map').hide();
 			$('#plotter').show();
-			$('#returnBtn').show();
+			$('#returnBtn').show(300);
 		};
 	} else {
 		//if no location
@@ -203,7 +203,7 @@ $('#returnBtn').on('click', function() {
 		stop = true;
 		$('#map').show();
 		$('#plotter').hide();
-		$('#returnBtn').hide();
+		$('#returnBtn').hide(300);
 });
 
 /**

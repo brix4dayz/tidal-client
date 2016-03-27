@@ -14,9 +14,9 @@ $('#tideApp').append("\
 			<p class=\"btn btn-info btn-sm\" id=\"oneDay\">Tides for one Day</p>\
 			<p class=\"btn btn-info btn-sm\" id=\"multDay\">Tides for Multiple Days</p>\
 			<ul class=\"pull-right\" id=\"daters\">\
-			  <p id=\"promptA\">Choose Date: <input type=\"click\" id=\"datepickerA\"></p>\
-			  <p id=\"promptB\">Choose Start Date: <input type=\"click\" id=\"datepickerB\"></p>\
-			  <p id=\"promptC\">Choose End Date: <input type=\"click\" id=\"datepickerC\"></p>\
+			  <p id=\"promptA\"> Date: <input type=\"click\" id=\"datepickerA\"></p>\
+			  <p id=\"promptB\"> Start Date: <input type=\"click\" id=\"datepickerB\"></p>\
+			  <p id=\"promptC\"> End Date:  <input type=\"click\" id=\"datepickerC\"></p>\
 			</ul>\
 		</div>\
 		<p class=\"btn btn-info btn-sm\" id=\"getTides\">Get Tides</p>\

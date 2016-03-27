@@ -10,31 +10,41 @@ html, body {
   padding-right: 0;
   border-left:solid;
   border-right:solid;
-  border-color: #49796b;
+  border-width: 2px;
+  border-color: #777777;
 }
 
 #selectdate {
-  background-color: #a0d6b4;
+  background-color: #03396c;
   height: auto;
   width:550px;
   border:solid;
-  border-color: #49796b;
+  border-color: #777777;
+  border-width: 2px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-#getTides {float:right;}
+#getTides {float:right; background:	#6497b1;}
+
+#promptA , #promptB, #promptC{background-color: #e0eeee; padding: 2px; border:solid;
+  border-color: #777777;
+  border-width: 2px;
+  font-weight: bold;}
 
 #portSelection {
   border:solid;
   height: auto;
   width:550px;
-  border-color:#49796b;
-  background-color: #a0d6b4;
+   border-width: 2px;
+  border-color:#777777;
+  background-color: 	#03396c;
 }
 
-#getTides {background:#49796b;} 
-#returnBtn {background:#49796b;}
+h3 {color: #e0eeee;}
+
+#getTides {background:	#6497b1;} 
+#returnBtn {background:	#6497b1; margin 10px;}
 
 #plotter {
 	width: 550px;
@@ -42,18 +52,17 @@ html, body {
   padding-right: 0;
   border-left:solid;
   border-right:solid;
-  border-color: #49796b;
+  border-width: 2px;
+  border-color: #777777;
 }
 
 #tideCanvas {margin-left: 10px;}
 
 #daters {margin: 5px;}
 
-#oneDay {background:#49796b; margin: 10px;}
+#oneDay {background:	#6497b1; margin: 10px;}
 
-#multDay {background:#49796b; margin: 10px;}
-
-#chooseLocation {background:#49796b;}
+#multDay {background:#6497b1; margin: 10px;}
 
 #app {
 	width: 550px;
