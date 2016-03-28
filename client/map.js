@@ -23,6 +23,7 @@ var selectedKey = null;
 
 function map() {
   
+    // THIS SHOULD BE RECEIVED FROM SERVER BASED ON STATE!
     var myLatLng = {lat: 30.220552, lng: -91.380674};
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -31,7 +32,7 @@ function map() {
 	streetViewControl:false
     });
 
-    $.getJSON(SERVER + "/locations", 
+    $.getJSON(SERVER + "/locations?state=" + STATE, 
 
         function (data) {
 
@@ -44,16 +45,22 @@ function map() {
              * output, like system.out.println in Java
              * prints the first pair of coords
              */ 
-            coordinates = data;
+            coordinates = {};
             //console.log("Printing first point: " + coordinates["0"]["lat"] + "," + coordinates["0"]["lng"]);
-			
-			for (var key in coordinates) {
+			var key = null;
+			for (var i in data) {
+                key = data[i]['name'];
+                coordinates[key] = {
+                    'id': data[i]['stationId'],
+                    'position': { lat: data[i]['lat'], lng: data[i]['lng']}
+                }
 				markers[key] = new google.maps.Marker({
-				  position: coordinates[key]['position'],
+				  position: coordinates[key].position,
 				  map: map,
 				  title: key,
 				  animation: google.maps.Animation.DROP
 		         });
+
             }
 		
             // for every marker
