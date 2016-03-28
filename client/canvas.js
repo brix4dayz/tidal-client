@@ -126,10 +126,12 @@ function plotData(context, options, tideData, chartHeight, chartWidth, zeroLine,
 	//Plot the data and fill in the area in btwn data and axis
 	//LineTo draws the line; fillRect the area.
 	//I Plan to implement interpolation
+	console.log("Plotting.");
 	var frac = (totalTime / PLOT_TIME);
 	if (frac >= 1.0) {
 		frac = 1.0;
 		stop = true;
+		console.log("Should stop.");
 	}
 	var dataLength = frac * tideData.length;
 	var ttlLength = tideData.length;
