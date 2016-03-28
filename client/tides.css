@@ -1,7 +1,6 @@
 html, body {
   height: 100%;
-  margin: 50px;
-  padding: 0;
+  font-family:Verdana;
 }
 
 #map {
@@ -21,30 +20,33 @@ html, body {
   border:solid;
   border-color: #777777;
   border-width: 2px;
-  padding-top: 5px;
+  padding-top: 3px;
   padding-bottom: 5px;
 }
 
-#getTides {float:right; background:	#6497b1;}
-
-#promptA , #promptB, #promptC{background-color: #e0eeee; padding: 2px; border:solid;
+#promptA , #promptB, #promptC{background-color: #e0eeee; border:solid; padding-left:5px;
   border-color: #777777;
   border-width: 2px;
+  margin-right: 10px;
   font-weight: bold;}
 
 #portSelection {
   border:solid;
   height: auto;
   width:550px;
-   border-width: 2px;
+  border-width: 2px;
   border-color:#777777;
   background-color: 	#03396c;
+  color: #e0eeee;
+  padding-top: 0px;
+  padding: 10px;
+  text-align: center;
 }
 
-h3 {color: #e0eeee;}
 
-#getTides {background:	#6497b1;} 
-#returnBtn {background:	#6497b1; margin 10px;}
+
+#getTides {background:	#6497b1; margin-bottom:3px;} 
+#returnBtn {background:	#6497b1;}
 
 #plotter {
 	width: 550px;
@@ -58,11 +60,11 @@ h3 {color: #e0eeee;}
 
 #tideCanvas {margin-left: 10px;}
 
-#daters {margin: 5px;}
+#selectors {margin-left: 0px; margin-top: 5px; margin-bottom: 5px;}
 
-#oneDay {background:	#6497b1; margin: 10px;}
+#oneDay {background:	#6497b1;}
 
-#multDay {background:#6497b1; margin: 10px;}
+#multDay {background:#6497b1;}
 
 #app {
 	width: 550px;

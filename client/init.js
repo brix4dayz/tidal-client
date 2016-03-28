@@ -16,7 +16,7 @@ $('#tideApp').append("\
 			<ul class=\"pull-right\" id=\"daters\">\
 			  <p id=\"promptA\"> Date: <input type=\"click\" id=\"datepickerA\"></p>\
 			  <p id=\"promptB\"> Start Date: <input type=\"click\" id=\"datepickerB\"></p>\
-			  <p id=\"promptC\"> End Date:  <input type=\"click\" id=\"datepickerC\"></p>\
+			  <p id=\"promptC\"> End  Date:  <input type=\"click\" id=\"datepickerC\"></p>\
 			</ul>\
 		</div>\
 		<p class=\"btn btn-info btn-sm\" id=\"getTides\">Get Tides</p>\
