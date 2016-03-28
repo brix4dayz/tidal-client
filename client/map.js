@@ -23,18 +23,18 @@ var selectedKey = null;
 
 function map() {
   
-    // THIS SHOULD BE RECEIVED FROM SERVER BASED ON STATE!
-    var myLatLng = {lat: 30.220552, lng: -91.380674};
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center: myLatLng,
-	streetViewControl:false
-    });
 
     $.getJSON(SERVER + "/locations?state=" + STATE, 
 
         function (data) {
+
+            // THIS SHOULD BE RECEIVED FROM SERVER BASED ON STATE!
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: data.coordinates,
+                streetViewControl:false
+            });
 
             /**
              * once jQuery has loaded the JSON file
@@ -48,11 +48,11 @@ function map() {
             coordinates = {};
             //console.log("Printing first point: " + coordinates["0"]["lat"] + "," + coordinates["0"]["lng"]);
 			var key = null;
-			for (var i in data) {
-                key = data[i]['name'];
+			for (var i in data.locations) {
+                key = data.locations[i]['name'];
                 coordinates[key] = {
-                    'id': data[i]['stationId'],
-                    'position': { lat: data[i]['lat'], lng: data[i]['lng']}
+                    'id': data.locations[i]['stationId'],
+                    'position': { lat: data.locations[i]['lat'], lng: data.locations[i]['lng']}
                 }
 				markers[key] = new google.maps.Marker({
 				  position: coordinates[key].position,
