@@ -129,6 +129,7 @@ function plotData(context, options, tideData, chartHeight, chartWidth, zeroLine,
 	var frac = (totalTime / PLOT_TIME);
 	if (frac >= 1.0) {
 		frac = 1.0;
+		stop = true;
 	}
 	var dataLength = frac * tideData.length;
 	var ttlLength = tideData.length;

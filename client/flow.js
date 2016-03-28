@@ -200,7 +200,6 @@ $('#getTides').on('click', function(){
 
 //Immediately clear canvas upon selecting get more tides
 $('#returnBtn').on('click', function() {
-		stop = true;
 		$('#map').show();
 		$('#plotter').hide();
 		$('#returnBtn').hide(300);
