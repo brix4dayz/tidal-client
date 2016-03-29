@@ -142,6 +142,14 @@ $('#promptC').hide();
 
 /**Once #getTides is clicked, map and selection block disappear
 and canvas comes into display**/
+var alertArray = [
+"Please select a valid date range no greater than 7 days.", 
+"Please select a begin date and an end date.",
+"Please choose a date.",
+"Please select a location from the map and try again."
+];
+var alerts = document.getElementById("alerts");
+alerts.innerHTML = "";
 
 $('#getTides').on('click', function(){
 	if (selectedKey !== null) {
@@ -167,10 +175,10 @@ $('#getTides').on('click', function(){
 				} else if (m2-1==m1 && 30-d1+d2<=6){
 					goAhead = true;
 				} else {
-					alert("TidePlotter\n\nPlease select a valid date range no greater than 7 days.");
+					alerts.innerHTML = alertArray[0];
 				};
 			} else {
-				alert("TidePlotter\n\nPlease select a begin date and an end date.");
+				alerts.innerHTML = alertArray[1];
 			}
 			options.interval = "06";
 		} else {
@@ -183,10 +191,11 @@ $('#getTides').on('click', function(){
 				options.interval = "06";
 				goAhead = true;
 			} else {
-				alert("TidePlotter\nPlease choose a date.");
+				alerts.innerHTML = alertArray[2];
 			}
 		}
 		if (goAhead){
+			alerts.innerHTML = "";
 			requestTides(options);
 			$('#map').hide();
 			$('#plotter').show();
@@ -194,7 +203,7 @@ $('#getTides').on('click', function(){
 		};
 	} else {
 		//if no location
-		alert("TidePlotter\nPlease select a location from the map.");
+		alerts.innerHTML = alertArray[3];
 		};
 });
 

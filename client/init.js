@@ -5,7 +5,7 @@ const SERVER = "//45.33.68.196:80";
 $('#tideApp').append("\
     <div class=\"container\" id=\"app\">\
       <div class=\"container\" id=\"portSelection\">\
-        <h3>Choose port by selecting a map pin:</h3>\
+        <h3>Choose a port by selecting a map pin:</h3>\
       </div>\
       <div id=\"map\"></div>\
 	  <div id=\"plotter\"><canvas width=\"540\" height=\"400\" id=\"tideCanvas\"></canvas></div>\
@@ -19,9 +19,11 @@ $('#tideApp').append("\
 			  <p id=\"promptC\"> End  Date:  <input type=\"click\" id=\"datepickerC\"></p>\
 			</ul>\
 		</div>\
-		<p class=\"btn btn-info btn-sm\" id=\"getTides\">Get Tides</p>\
+		<p class=\"btn btn-sm\" id=\"getTides\">Get Tides</p>\
 		<p class=\"btn btn-info btn-sm\" id=\"returnBtn\">Select New Location</p>\
+		<p class=\"copyright\">TidePull © Wren Apps, 2016</p>\
 	  </div>\
+	  <p id=\"alerts\">Heya you fucked up.</p>\
     </div>");
 
 $('body').append("\

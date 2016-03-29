@@ -1,7 +1,8 @@
 html, body {
   height: 100%;
-  font-family:Verdana;
 }
+
+#tideApp{  font-family:Verdana;}
 
 #map {
   height: 400px; width: 550px;
@@ -21,8 +22,10 @@ html, body {
   border-color: #777777;
   border-width: 2px;
   padding-top: 3px;
-  padding-bottom: 5px;
+  padding-bottom: 0px;
 }
+
+#alerts {color:#dd0e0e; font-family: Verdana; font-size: 18px;}
 
 #promptA , #promptB, #promptC{background-color: #e0eeee; border:solid; padding-left:5px;
   border-color: #777777;
@@ -45,7 +48,7 @@ html, body {
 
 
 
-#getTides {background:	#6497b1; margin-bottom:3px;} 
+#getTides {background:	#008000; margin-bottom:3px; color: #e0eeee; font-family: Verdana;} 
 #returnBtn {background:	#6497b1;}
 
 #plotter {
@@ -57,6 +60,8 @@ html, body {
   border-width: 2px;
   border-color: #777777;
 }
+
+.copyright {text-align:right; color:#e0eeee; font-size:10px;}
 
 #tideCanvas {margin-left: 10px;}
 
