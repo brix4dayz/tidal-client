@@ -18,15 +18,6 @@ var tideData = null;
 const PLOT_TIME = 1.0;
 var first = true;
 
-
-var chartHeight = 350;
-var chartWidth = 490;
-var leftMarg = chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
-var topMarg = chartHeight /18; //offset btwn top of canvas and top of chart; replaces 25's
-
-var clearHeight = chartHeight + topMarg;
-var clearWidth = chartWidth + leftMarg;
-
 //grab div
 //all work is applied to the context object
 var canvas = document.getElementById("tideCanvas");

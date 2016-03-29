@@ -5,10 +5,10 @@ const SERVER = "//45.33.68.196:80";
 $('#tideApp').append("\
     <div class=\"container\" id=\"app\">\
       <div class=\"container\" id=\"portSelection\">\
-        <h3>Choose a port by selecting a map pin:</h3>\
+        <p>Choose a port by selecting a map pin:</p>\
       </div>\
       <div id=\"map\"></div>\
-	  <div id=\"plotter\"><canvas width=\"540\" height=\"400\" id=\"tideCanvas\"></canvas></div>\
+	  <div id=\"plotter\"><canvas width=\"300\" height=\"250\" id=\"tideCanvas\"></canvas></div>\
 	  <div class=\"container\" id=\"selectdate\">\
 		<div class=\"row\" id=\"selectors\">\
 			<p class=\"btn btn-info btn-sm\" id=\"oneDay\">Tides for one Day</p>\

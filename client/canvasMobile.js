@@ -8,8 +8,8 @@
 
 // (function (){ ...code }()); is a trick to create a private scope for the variables within
 
-var chartHeight = 365;
-var chartWidth = 490;
+var chartHeight = 225;
+var chartWidth = 280;
 var leftMarg = chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
 var topMarg = chartHeight /18; //offset btwn top of canvas and top of chart; replaces 25's
 
@@ -162,22 +162,22 @@ function plotData(context, options, tideData, chartHeight, chartWidth, zeroLine,
 function labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth){
 	//Put chart label//
 	context.fillStyle= "#092643";
-	context.font= "17px Sans Serif";
+	context.font= "12px Sans Serif";
 	context.fillText("Feet", leftMarg*1.8, topMarg*2.5);
 	//Put Y axis label//
-	context.font = "14px Sans Serif";
+	context.font = "8px Sans Serif";
 	context.textAlign = "right";
 	//Put some ticks, numbers on the y axis
 	context.strokeStyle = "black";
 	for (var yTick = 0; yTick <= maxVal; yTick+=.25){
-		context.fillText(yTick, leftMarg-8, zeroLine - 4*yTick * chartHeight/barCount+.2*topMarg);
+		context.fillText(yTick, leftMarg-4, zeroLine - 4*yTick * chartHeight/barCount+.2*topMarg);
 		context.beginPath();
 		context.moveTo(leftMarg, zeroLine -4*yTick*chartHeight/barCount);
 		context.lineTo(leftMarg+.1*leftMarg, zeroLine -4*yTick*chartHeight/barCount);
 		context.stroke();
 	}
 	for (var yNTick = minVal; yNTick < 0; yNTick+=.25){
-		context.fillText(yNTick, leftMarg-8, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.fillText(yNTick, leftMarg-4, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.beginPath();
 		context.moveTo(leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.lineTo(leftMarg+.1*leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
@@ -191,7 +191,7 @@ function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight)
 	//If one day, we describe the time every two hours
 	//If multDats, we describe noon and 12am
 	if (tideData.length == 240) {
-		context.font = "12px Sans Serif";
+		context.font = "7px Sans Serif";
 		context.strokeStyle = "#092643";
 		context.fillStyle = "#092643";
 		context.textAlign = "center";
@@ -202,7 +202,7 @@ function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight)
 			context.stroke();
 			context.closePath();
 			context.beginPath();
-			context.arc(leftMarg + xTick*chartWidth/12, zeroLine, 3, 0, 2*Math.PI, true);
+			context.arc(leftMarg + xTick*chartWidth/12, zeroLine, 2, 0, 2*Math.PI, true);
 			context.closePath();
 			context.fill();
 			if (xTick < 6){
@@ -215,7 +215,7 @@ function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight)
 			}
 		}
 	} else {
-		context.font= "12px Sans Serif";
+		context.font= "7px Sans Serif";
 		context.fillStyle = "#092643";
 		var numDays = tideData.length/240;
 		context.textAlign = "center";
