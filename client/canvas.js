@@ -13,10 +13,19 @@ if (!TidePull.mobile) {
 	TidePull.chartHeight = 365;
 	TidePull.chartWidth = 490;
 
+	TidePull.labelFont1 = 17;
+	TidePull.labelFont2 = 14;
+	TidePull.timeFont = 12;
+	
+
 } else {
 
 	TidePull.chartHeight = 225;
 	TidePull.chartWidth = 280;
+
+	TidePull.labelFont1 = 12;
+	TidePull.labelFont2 = 8;
+	TidePull.timeFont = 7;
 }
 
 TidePull.leftMarg = TidePull.chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
@@ -171,10 +180,10 @@ TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth
 TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth){
 	//Put chart label//
 	context.fillStyle= "#092643";
-	context.font= "17px Sans Serif";
+	context.font= TidePull.labelFont1 + "px Sans Serif";
 	context.fillText("Feet", TidePull.leftMarg*1.8, TidePull.topMarg*2.5);
 	//Put Y axis label//
-	context.font = "14px Sans Serif";
+	context.font = TidePull.labelFont2 + "px Sans Serif";
 	context.textAlign = "right";
 	//Put some ticks, numbers on the y axis
 	context.strokeStyle = "black";
@@ -199,8 +208,11 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 	//Tick and Number the Time axis
 	//If one day, we describe the time every two hours
 	//If multDats, we describe noon and 12am
+
+
+
 	if (tideData.length == 240) {
-		context.font = "12px Sans Serif";
+		context.font = TidePull.timeFont + "px Sans Serif";
 		context.strokeStyle = "#092643";
 		context.fillStyle = "#092643";
 		context.textAlign = "center";
@@ -224,7 +236,7 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			}
 		}
 	} else {
-		context.font= "12px Sans Serif";
+		context.font= TidePull.timeFont + "px Sans Serif";
 		context.fillStyle = "#092643";
 		var numDays = tideData.length/240;
 		context.textAlign = "center";
