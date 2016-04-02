@@ -88,7 +88,12 @@ function map() {
                 );
             }
 
-            map.checkResize();   
+            $(document).ready(function() {
+                $(window).resize(function() {
+                    google.maps.event.trigger(map, 'resize');
+                });
+                google.maps.event.trigger(map, 'resize');
+            });  
         }
     );
 }
