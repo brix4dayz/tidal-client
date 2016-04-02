@@ -8,7 +8,7 @@
  * objects in javascript are like arrays but
  * use strings as indices instead of integer numbers
  */ 
-var coordinates = null;
+TidePull.coordinates = null;
 
 
 /**
@@ -18,14 +18,14 @@ var coordinates = null;
  * and adds markers to the map with a bounce
  * then once they click it, it stops bouncing
  */
-var markers = {};
-var selectedKey = null;
+TidePull.markers = {};
+TidePull.selectedKey = null;
 
 function map() {
   
 
 
-    $.getJSON(SERVER + "/locations?state=" + STATE, 
+    $.getJSON(TidePull.SERVER + "/locations?state=" + STATE, 
 
         function (data) {
 
@@ -45,17 +45,17 @@ function map() {
              * output, like system.out.println in Java
              * prints the first pair of coords
              */ 
-            coordinates = {};
+            TidePull.coordinates = {};
             //console.log("Printing first point: " + coordinates["0"]["lat"] + "," + coordinates["0"]["lng"]);
 			var key = null;
 			for (var i in data.locations) {
                 key = data.locations[i]['name'];
-                coordinates[key] = {
+                TidePull.coordinates[key] = {
                     'id': data.locations[i]['stationId'],
                     'position': { lat: data.locations[i]['lat'], lng: data.locations[i]['lng']}
                 }
-				markers[key] = new google.maps.Marker({
-				  position: coordinates[key].position,
+				TidePull.markers[key] = new google.maps.Marker({
+				  position: TidePull.coordinates[key].position,
 				  map: map,
 				  title: key,
 				  animation: google.maps.Animation.DROP
@@ -64,23 +64,23 @@ function map() {
             }
 		
             // for every marker
-			for (var key in coordinates){
+			for (var key in TidePull.coordinates){
 				// make it clickable
-                google.maps.event.addListener(markers[key], 'click', 
+                google.maps.event.addListener(TidePull.markers[key], 'click', 
 					function(innerKey) { // do this when clicked
 						return function() {
                             // reset other markers
-                            if (selectedKey !== innerKey && selectedKey !== null) {
-                                markers[selectedKey].setAnimation(null);
+                            if (TidePull.selectedKey !== innerKey && TidePull.selectedKey !== null) {
+                                TidePull.markers[TidePull.selectedKey].setAnimation(null);
                             }
                             // turn bounce on, display name
-							if (markers[innerKey].animation === null) {
-                                selectedKey = innerKey;
-								markers[innerKey].setAnimation(google.maps.Animation.BOUNCE);
+							if (TidePull.markers[innerKey].animation === null) {
+                                TidePull.selectedKey = innerKey;
+								TidePull.markers[innerKey].setAnimation(google.maps.Animation.BOUNCE);
                                 document.getElementById("portSelection").innerHTML = "<h3>You have selected: " + innerKey + "</h3>";
 							} else { // turn off, tell them to choose a port
-                                selectedKey = null;
-								markers[innerKey].setAnimation(null);
+                                TidePull.selectedKey = null;
+								TidePull.markers[innerKey].setAnimation(null);
                                 document.getElementById("portSelection").innerHTML = "<h3>Choose port by selecting a map pin:</h3>";
                             }
 						};

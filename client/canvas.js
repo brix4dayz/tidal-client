@@ -8,13 +8,22 @@
 
 // (function (){ ...code }()); is a trick to create a private scope for the variables within
 
-var chartHeight = 365;
-var chartWidth = 490;
-var leftMarg = chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
-var topMarg = chartHeight /18; //offset btwn top of canvas and top of chart; replaces 25's
+if (!TidePull.mobile) {
 
-var clearHeight = chartHeight + topMarg;
-var clearWidth = chartWidth + leftMarg;
+	TidePull.chartHeight = 365;
+	TidePull.chartWidth = 490;
+
+} else {
+
+	TidePull.chartHeight = 225;
+	TidePull.chartWidth = 280;
+}
+
+TidePull.leftMarg = TidePull.chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
+TidePull.topMarg = TidePull.chartHeight /18; //offset btwn top of canvas and top of chart; replaces 25's
+
+TidePull.clearHeight = TidePull.chartHeight + TidePull.topMarg;
+TidePull.clearWidth = TidePull.chartWidth + TidePull.leftMarg;
 
 (function() {
     var lastTime = 0;
@@ -48,46 +57,46 @@ var clearWidth = chartWidth + leftMarg;
 (function () {
   var timer = null;
   var deltaTime = 0.0;
-	window.totalTime = 0.0;
+	window.TidePull.totalTime = 0.0;
 
     function updateDeltaTime() {
         var now = Date.now();
         deltaTime = ( now - (timer || now) ) / 1000.0;
-        window.totalTime = window.totalTime + deltaTime;
+        window.TidePull.totalTime = window.TidePull.totalTime + deltaTime;
      
         timer = now;
     }
 
     function resetTime() {
     	deltaTime = 0.0;
-    	window.totalTime = 0.0;
+    	window.TidePull.totalTime = 0.0;
     	timer = null;
     }
 
-    window.updateDeltaTime = updateDeltaTime;
-    window.resetTime = resetTime;
+    window.TidePull.updateDeltaTime = updateDeltaTime;
+    window.TidePull.resetTime = resetTime;
 
 } ());
 
-function getCanvas(){
+TidePull.getCanvas = function() {
 
-	if (first) {
-		first = false;
-		resetTime();
+	if (TidePull.first) {
+		TidePull.first = false;
+		TidePull.resetTime();
 	}
-	updateDeltaTime();
+	TidePull.updateDeltaTime();
 
-	if (!stop) {
-		requestAnimationFrame(getCanvas);
-		getMax(context, options, tideData);
+	if (!TidePull.stop) {
+		requestAnimationFrame(TidePull.getCanvas);
+		TidePull.getMax(TidePull.context, TidePull.options, TidePull.tideData);
 	} else {
-		tideData = null;
-		options = null;
+		TidePull.tideData = null;
+		TidePull.options = null;
 	}
 
 }
 
-function getMax(context, options, tideData){
+TidePull.getMax = function (context, options, tideData){
 	//get Max and Min Values and round them to the upper .25 increment
 	var maxVal= .5;
 	var minVal= -.25;
@@ -99,47 +108,47 @@ function getMax(context, options, tideData){
 			minVal = Math.round(tideData[i]["pred"]*4)/4 - .25;
 		};	
 	}
-	drawAxis(context, options, tideData, maxVal, minVal);
+	TidePull.drawAxis(context, options, tideData, maxVal, minVal);
 }
 
 
-function drawAxis(context, options, tideData, maxVal, minVal){
+TidePull.drawAxis = function(context, options, tideData, maxVal, minVal){
 	//Draws axis lines, and background grid
 	//Bar Count is the dynamic number of blue and white horizontal bars.
 	//It depends on our range of data
 	//zeroLine marks the y value of our x axis
 	var barCount = (maxVal - minVal)/.25;
-	context.clearRect(0,0,clearWidth,clearHeight);
+	context.clearRect(0,0,TidePull.clearWidth,TidePull.clearHeight);
 	for (var gridBar = 0; gridBar < barCount; gridBar++ ){
 		if (gridBar % 2 == 0){
 			context.fillStyle = "#e8f8ff";
 		} else {
 			context.fillStyle = "#fbfdfb";
 		}
-		context.fillRect(leftMarg+1, gridBar*chartHeight/barCount + topMarg, chartWidth, chartHeight/barCount);
+		context.fillRect(TidePull.leftMarg+1, gridBar*TidePull.chartHeight/barCount + TidePull.topMarg, TidePull.chartWidth, TidePull.chartHeight/barCount);
 	}
-	var zeroLine = (chartHeight*maxVal)/(barCount*.25)+topMarg;
+	var zeroLine = (TidePull.chartHeight*maxVal)/(barCount*.25)+TidePull.topMarg;
 	context.beginPath();
-	context.moveTo(leftMarg, topMarg);
-	context.lineTo(leftMarg, chartHeight + topMarg);
-	context.moveTo(leftMarg, zeroLine);
-	context.lineTo(chartWidth + leftMarg, zeroLine);
+	context.moveTo(TidePull.leftMarg, TidePull.topMarg);
+	context.lineTo(TidePull.leftMarg, TidePull.chartHeight + TidePull.topMarg);
+	context.moveTo(TidePull.leftMarg, zeroLine);
+	context.lineTo(TidePull.chartWidth + TidePull.leftMarg, zeroLine);
 	context.lineWidth = 2;
 	context.strokeStyle = "#092643";
 	context.stroke();
 	
-	plotData(context, options, tideData, chartHeight, chartWidth, zeroLine, barCount, maxVal, minVal);
+	TidePull.plotData(context, options, tideData, TidePull.chartHeight, TidePull.chartWidth, zeroLine, barCount, maxVal, minVal);
 }
 
-function plotData(context, options, tideData, chartHeight, chartWidth, zeroLine, barCount, maxVal, minVal){
+TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth, zeroLine, barCount, maxVal, minVal){
 	//Plot the data and fill in the area in btwn data and axis
 	//LineTo draws the line; fillRect the area.
 	//I Plan to implement interpolation
 	console.log("Plotting.");
-	var frac = (totalTime / PLOT_TIME);
+	var frac = (TidePull.totalTime / TidePull.PLOT_TIME);
 	if (frac >= 1.0) {
 		frac = 1.0;
-		stop = true;
+		TidePull.stop = true;
 		console.log("Should stop.");
 	}
 	var dataLength = frac * tideData.length;
@@ -147,46 +156,46 @@ function plotData(context, options, tideData, chartHeight, chartWidth, zeroLine,
 	context.strokeStyle = "black";
 	context.lineWidth = 1;
 	context.beginPath();
-	context.moveTo(leftMarg+1, zeroLine - tideData[0]["pred"]*4*chartHeight/barCount);
+	context.moveTo(TidePull.leftMarg+1, zeroLine - tideData[0]["pred"]*4*chartHeight/barCount);
 	j=0;
 	context.fillStyle = "#a0abb6";
 	for (var i=0; i<dataLength; i++) {
-		context.lineTo(chartWidth/ttlLength*j + leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount);
+		context.lineTo(chartWidth/ttlLength*j + TidePull.leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount);
 		context.stroke();
-		context.fillRect(chartWidth/ttlLength*j + leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount, 1, tideData[i]["pred"]*4*chartHeight/barCount-1);
+		context.fillRect(chartWidth/ttlLength*j + TidePull.leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount, 1, tideData[i]["pred"]*4*chartHeight/barCount-1);
 		j++;
 	}
-	labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth);
+	TidePull.labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth);
 }
 
-function labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth){
+TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth){
 	//Put chart label//
 	context.fillStyle= "#092643";
 	context.font= "17px Sans Serif";
-	context.fillText("Feet", leftMarg*1.8, topMarg*2.5);
+	context.fillText("Feet", TidePull.leftMarg*1.8, TidePull.topMarg*2.5);
 	//Put Y axis label//
 	context.font = "14px Sans Serif";
 	context.textAlign = "right";
 	//Put some ticks, numbers on the y axis
 	context.strokeStyle = "black";
 	for (var yTick = 0; yTick <= maxVal; yTick+=.25){
-		context.fillText(yTick, leftMarg-8, zeroLine - 4*yTick * chartHeight/barCount+.2*topMarg);
+		context.fillText(yTick, TidePull.leftMarg-8, zeroLine - 4*yTick * chartHeight/barCount+.2*TidePull.topMarg);
 		context.beginPath();
-		context.moveTo(leftMarg, zeroLine -4*yTick*chartHeight/barCount);
-		context.lineTo(leftMarg+.1*leftMarg, zeroLine -4*yTick*chartHeight/barCount);
+		context.moveTo(TidePull.leftMarg, zeroLine -4*yTick*chartHeight/barCount);
+		context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg, zeroLine -4*yTick*chartHeight/barCount);
 		context.stroke();
 	}
 	for (var yNTick = minVal; yNTick < 0; yNTick+=.25){
-		context.fillText(yNTick, leftMarg-8, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.fillText(yNTick, TidePull.leftMarg-8, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.beginPath();
-		context.moveTo(leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
-		context.lineTo(leftMarg+.1*leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.moveTo(TidePull.leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.stroke();
 	}
-	timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight);
+	TidePull.timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight);
 }
 
-function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight) {
+TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, chartHeight) {
 	//Tick and Number the Time axis
 	//If one day, we describe the time every two hours
 	//If multDats, we describe noon and 12am
@@ -197,21 +206,21 @@ function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight)
 		context.textAlign = "center";
 		for (var xTick = 1; xTick < 12; xTick++){
 			context.beginPath();
-			context.moveTo(leftMarg + xTick*chartWidth/12, zeroLine);
-			context.lineTo(leftMarg+.32*leftMarg + xTick*chartWidth/12, zeroLine+topMarg*.6);
+			context.moveTo(TidePull.leftMarg + xTick*chartWidth/12, zeroLine);
+			context.lineTo(TidePull.leftMarg+.32*TidePull.leftMarg + xTick*chartWidth/12, zeroLine+TidePull.topMarg*.6);
 			context.stroke();
 			context.closePath();
 			context.beginPath();
-			context.arc(leftMarg + xTick*chartWidth/12, zeroLine, 3, 0, 2*Math.PI, true);
+			context.arc(TidePull.leftMarg + xTick*chartWidth/12, zeroLine, 3, 0, 2*Math.PI, true);
 			context.closePath();
 			context.fill();
 			if (xTick < 6){
-				context.fillText(xTick*2+"AM", leftMarg*1.6+xTick*chartWidth/12, zeroLine+topMarg*1.2);
+				context.fillText(xTick*2+"AM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*1.2);
 			} else if (xTick == 6){
-				context.fillText(xTick*2+"PM", leftMarg*1.6+xTick*chartWidth/12, zeroLine+topMarg*1.2);
+				context.fillText(xTick*2+"PM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*1.2);
 			}
 			else{
-				context.fillText(xTick%6*2+"PM", leftMarg*1.6+xTick*chartWidth/12, zeroLine+topMarg*1.2);
+				context.fillText(xTick%6*2+"PM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*1.2);
 			}
 		}
 	} else {
@@ -221,18 +230,18 @@ function timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight)
 		context.textAlign = "center";
 		for(var n=0; n < numDays; n+=.5){
 			context.beginPath();
-			context.moveTo(leftMarg + n*chartWidth/numDays, zeroLine);
-			context.lineTo(leftMarg+.2*leftMarg + n*chartWidth/numDays, zeroLine+topMarg*.6);
+			context.moveTo(TidePull.leftMarg + n*chartWidth/numDays, zeroLine);
+			context.lineTo(TidePull.leftMarg+.2*TidePull.leftMarg + n*chartWidth/numDays, zeroLine+TidePull.topMarg*.6);
 			context.stroke();
 			context.closePath();
 			context.beginPath();
-			context.arc(leftMarg + n*chartWidth/numDays, zeroLine, 3, 0, 2*Math.PI, true);
+			context.arc(TidePull.leftMarg + n*chartWidth/numDays, zeroLine, 3, 0, 2*Math.PI, true);
 			context.closePath();
 			context.fill();
 			if ((n%1)==0){
-				context.fillText("12AM", leftMarg*1.5 + n*chartWidth/numDays, zeroLine + topMarg*1.2);
+				context.fillText("12AM", TidePull.leftMarg*1.5 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*1.2);
 			} else {
-				context.fillText("Noon", leftMarg*1.5 + n*chartWidth/numDays, zeroLine + topMarg*1.2);
+				context.fillText("Noon", TidePull.leftMarg*1.5 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*1.2);
 			}
 		}
 	}

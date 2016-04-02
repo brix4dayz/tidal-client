@@ -2,28 +2,28 @@
 // src:
 //   http://gosukiwi.svbtle.com/the-right-way-of-caching-ajax-requests-with-jquery
 
-var requestCache = {};
+TidePull.requestCache = {};
 
 // src: http://stackoverflow.com/questions/2532218/pick-random-property-from-a-javascript-object
-var randomKey = function (obj) {
+TidePull.randomKey = function (obj) {
     var keys = Object.keys(obj)
     return keys[ keys.length * Math.random() << 0];
 };
 
-const CACHE_MAX = 10;
+TidePull.CACHE_MAX = 10;
 
-var options = null;
-var tideData = null;
+TidePull.options = null;
+TidePull.tideData = null;
 
-const PLOT_TIME = 1.0;
-var first = true;
+TidePull.PLOT_TIME = 1.0;
+TidePull.first = true;
 
 //grab div
 //all work is applied to the context object
-var canvas = document.getElementById("tideCanvas");
-var context = canvas.getContext("2d");
+TidePull.canvas = document.getElementById("tideCanvas");
+TidePull.context = TidePull.canvas.getContext("2d");
 
-var stop = false;
+TidePull.stop = false;
 
 /**
  * Requests the tides for a given period of time. Cache the quest in
@@ -32,49 +32,49 @@ var stop = false;
  *
  * TODO: optimization, choose least used request and keep useCounter...
  */
-function requestTides() {
+TidePull.requestTides = function() {
   // console.log(options['location'] + options["beginDate"] + options["endDate"]);
   // var canvas = document.getElementById("tideCanvas");
   // var context = canvas.getContext("2d");
 
   //console.log("Hello!");
-  context.clearRect(0,0,clearWidth,clearHeight);
-  context.fillStyle = "#ffffff";
-  context.fillRect(0,0,clearWidth,clearHeight);
-  context.fillStyle = "#000000";
-  context.font= "18px Sans Serif";
-  context.textAlign = "center";
-  context.fillText("Loading...", chartHeight*.5, chartWidth*.5);
+  TidePull.context.clearRect(0,0,TidePull.clearWidth,TidePull.clearHeight);
+  TidePull.context.fillStyle = "#ffffff";
+  TidePull.context.fillRect(0,0,TidePull.clearWidth,TidePull.clearHeight);
+  TidePull.context.fillStyle = "#000000";
+  TidePull.context.font= "18px Sans Serif";
+  TidePull.context.textAlign = "center";
+  TidePull.context.fillText("Loading...", TidePull.chartHeight*.5, TidePull.chartWidth*.5);
 
   // Make the POST request
-  if (!requestCache[options['location'] + options["beginDate"] + options["endDate"]]) {
-      while (Object.keys(requestCache).length >= CACHE_MAX) {
+  if (!TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]]) {
+      while (Object.keys(TidePull.requestCache).length >= TidePull.CACHE_MAX) {
         console.log("Removing a cached request...");
-        delete requestCache[randomKey(requestCache)];
+        delete TidePull.requestCache[TidePull.randomKey(TidePull.requestCache)];
       }
-      requestCache[options['location'] + options["beginDate"] + options["endDate"]] = $.ajax({
+      TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]] = $.ajax({
         type: "POST",
-        url: SERVER + "/tides",
+        url: TidePull.SERVER + "/tides",
         contentType: "application/json",
         crossDomain: true,
-        data: JSON.stringify(options),
+        data: JSON.stringify(TidePull.options),
         dataType: "json" 
       }).promise();
   }
   
-  requestCache[options['location'] + options["beginDate"] + options["endDate"]].done(
+  TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]].done(
     function( data, status, xhr ) {
       var obj = JSON.parse(xhr.responseText);
 
       //console.log(obj["soapenv:Envelope"]["soapenv:Body"][0]["PredictionsAndMetadata"][0]["stationName"][0]);
 
-      tideData = obj["soapenv:Envelope"]["soapenv:Body"][0]["PredictionsAndMetadata"][0]["data"][0]["item"];
-      first = true;
-      stop = false;
-      getCanvas();
+      TidePull.tideData = obj["soapenv:Envelope"]["soapenv:Body"][0]["PredictionsAndMetadata"][0]["data"][0]["item"];
+      TidePull.first = true;
+      TidePull.stop = false;
+      TidePull.getCanvas();
   });
 
-  requestCache[options['location'] + options["beginDate"] + options["endDate"]].fail(function( error ){
+  TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]].fail(function( error ){
     // Log any error.
     console.log( "ERROR:", error );
   });
@@ -93,7 +93,7 @@ Date.prototype.noaaDate = function () {
 	return this.yyyymmdd() + " " + (hh[1]?hh:"0"+hh[0]) + ":" + (mm[1]?mm:"0"+mm[0]);
 };
 
-var isMultipleDays = false;
+TidePull.isMultipleDays = false;
 
 /** Hide canvas and return button. */
 $('#plotter').hide();
@@ -112,7 +112,7 @@ $('#returnBtn').hide();
 $('#oneDay').on('click', function(){
 	$('#multDay').toggle(300);
 	$('#promptA').toggle(300);
-	isMultipleDays = false;
+	TidePull.isMultipleDays = false;
 })	
 
 /**
@@ -123,7 +123,7 @@ $('#multDay').on('click', function(){
 	$('#oneDay').toggle(300);
 	$('#promptB').toggle(300);
 	$('#promptC').toggle(300);
-	isMultipleDays = true;
+	TidePull.isMultipleDays = true;
 })	
 
 /**hides things that don't show before time button is selected**/
@@ -133,68 +133,68 @@ $('#promptC').hide();
 
 /**Once #getTides is clicked, map and selection block disappear
 and canvas comes into display**/
-var alertArray = [
+TidePull.alertArray = [
 "Please select a valid date range no greater than 7 days.", 
 "Please select a begin date and an end date.",
 "Please choose a date.",
 "Please select a location from the map and try again."
 ];
-var alerts = document.getElementById("alerts");
-alerts.innerHTML = "";
+TidePull.alerts = document.getElementById("alerts");
+TidePull.alerts.innerHTML = "";
 
 $('#getTides').on('click', function(){
-	if (selectedKey !== null) {
-		options = {'location': selectedKey, 'id': coordinates[selectedKey]['id']};
+	if (TidePull.selectedKey !== null) {
+		TidePull.options = {'location': TidePull.selectedKey, 'id': TidePull.coordinates[TidePull.selectedKey]['id']};
 		// pass more than location and id
 		var goAhead = false;
-		if (isMultipleDays) {
+		if (TidePull.isMultipleDays) {
 			if ($('#datepickerB').datepicker('getDate')!==null && $('#datepickerC').datepicker('getDate')!==null){
-				options.beginDate = $('#datepickerB').datepicker('getDate').noaaDate();
-				options.endDate = $('#datepickerC').datepicker('getDate');
-				options.endDate.setHours(23);
-				options.endDate.setMinutes(59);
-				options.endDate = options.endDate.noaaDate();
+				TidePull.options.beginDate = $('#datepickerB').datepicker('getDate').noaaDate();
+				TidePull.options.endDate = $('#datepickerC').datepicker('getDate');
+				TidePull.options.endDate.setHours(23);
+				TidePull.options.endDate.setMinutes(59);
+				TidePull.options.endDate = TidePull.options.endDate.noaaDate();
 				//Make sure they select a date range thats valid
 				//No more than seven days
 				//Begin date is before end date
-				var d1 = parseInt(options.beginDate.slice(6,8));
-				var d2 = parseInt(options.endDate.slice(6,8));
-				var m1 = parseInt(options.beginDate.slice(4,6));
-				var m2 = parseInt(options.endDate.slice(4,6));
+				var d1 = parseInt(TidePull.options.beginDate.slice(6,8));
+				var d2 = parseInt(TidePull.options.endDate.slice(6,8));
+				var m1 = parseInt(TidePull.options.beginDate.slice(4,6));
+				var m2 = parseInt(TidePull.options.endDate.slice(4,6));
 				if (d2>d1 && d2-d1<=7 && m2==m1){
 					goAhead = true;
 				} else if (m2-1==m1 && 30-d1+d2<=6){
 					goAhead = true;
 				} else {
-					alerts.innerHTML = alertArray[0];
+					TidePull.alerts.innerHTML = TidePull.alertArray[0];
 				};
 			} else {
-				alerts.innerHTML = alertArray[1];
+				TidePull.alerts.innerHTML = TidePull.alertArray[1];
 			}
-			options.interval = "06";
+			TidePull.options.interval = "06";
 		} else {
 			if ($('#datepickerA').datepicker('getDate')!==null){
-				options.beginDate = $('#datepickerA').datepicker('getDate').noaaDate();
-				options.endDate = $('#datepickerA').datepicker('getDate');
-				options.endDate.setHours(23);
-				options.endDate.setMinutes(59);
-				options.endDate = options.endDate.noaaDate();
-				options.interval = "06";
+				TidePull.options.beginDate = $('#datepickerA').datepicker('getDate').noaaDate();
+				TidePull.options.endDate = $('#datepickerA').datepicker('getDate');
+				TidePull.options.endDate.setHours(23);
+				TidePull.options.endDate.setMinutes(59);
+				TidePull.options.endDate = TidePull.options.endDate.noaaDate();
+				TidePull.options.interval = "06";
 				goAhead = true;
 			} else {
-				alerts.innerHTML = alertArray[2];
+				TidePull.alerts.innerHTML = TidePull.alertArray[2];
 			}
 		}
 		if (goAhead){
-			alerts.innerHTML = "";
-			requestTides(options);
+			TidePull.alerts.innerHTML = "";
+			TidePull.requestTides();
 			$('#map').hide();
 			$('#plotter').show();
 			$('#returnBtn').show(300);
 		};
 	} else {
 		//if no location
-		alerts.innerHTML = alertArray[3];
+		TidePull.alerts.innerHTML = TidePull.alertArray[3];
 		};
 });
 
