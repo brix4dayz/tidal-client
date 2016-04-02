@@ -259,4 +259,6 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 	}
 }
 
-
+$('body').append("\
+  <script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBpN0l_qaCwhVFOKjFIHDuEgtlOkrlFixQ&signed_in=true&callback=map\">\
+  </script>");

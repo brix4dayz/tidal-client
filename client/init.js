@@ -61,6 +61,8 @@ if (!TidePull.mobile) {
 
   TidePull.appendStyle("https://rawgithub.com/brix4dayz/tidal-client/master/client/tides.mobile.min.css");
 
+  //TidePull.appendStyle("./tides.mobile.min.css");
+
   $('#tideApp').append("\
       <div class=\"container\" id=\"app\">\
         <div class=\"container\" id=\"portSelection\">\
@@ -88,7 +90,3 @@ if (!TidePull.mobile) {
   document.body.innerHTML += "<p>Mobile Mode!</p>";
 
 }
-
-$('body').append("\
-  <script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBpN0l_qaCwhVFOKjFIHDuEgtlOkrlFixQ&signed_in=true&callback=map\">\
-  </script>");
