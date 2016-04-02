@@ -86,7 +86,9 @@ function map() {
 						};
 					}(key)
                 );
-            }   
+            }
+
+            map.checkResize();   
         }
     );
 }

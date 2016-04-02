@@ -29,7 +29,7 @@ TidePull.SERVER = "//45.33.68.196:80";
 
 if (!TidePull.mobile) {
 
-  TidePull.appendStyle("http://rawgithub.com/brix4dayz/tidal-client/master/client/tides.min.css");
+  TidePull.appendStyle("https://rawgithub.com/brix4dayz/tidal-client/master/client/tides.min.css");
 
   //TidePull.appendStyle("./tides.min.css");
 
