@@ -13,9 +13,10 @@ if (!TidePull.mobile) {
 	TidePull.chartHeight = 365;
 	TidePull.chartWidth = 490;
 
-	TidePull.labelFont1 = 17;
-	TidePull.labelFont2 = 14;
+	TidePull.labelFont1 = 15; //Font size for Feet indicator
+	TidePull.labelFont2 = 14; //Font size for Y axis Numbers
 	TidePull.timeFont = 12;
+	TidePull.Yfact = 6 //The Spacing btwn y axis and numbers 
 	
 
 } else {
@@ -23,9 +24,10 @@ if (!TidePull.mobile) {
 	TidePull.chartHeight = 225;
 	TidePull.chartWidth = 280;
 
-	TidePull.labelFont1 = 12;
+	TidePull.labelFont1 = 10;
 	TidePull.labelFont2 = 8;
-	TidePull.timeFont = 7;
+	TidePull.timeFont = 8;
+	TidePull.Yfact = 2;
 }
 
 TidePull.leftMarg = TidePull.chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
@@ -163,7 +165,7 @@ TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth
 	var dataLength = frac * tideData.length;
 	var ttlLength = tideData.length;
 	context.strokeStyle = "black";
-	context.lineWidth = 1;
+	context.lineWidth = .1;
 	context.beginPath();
 	context.moveTo(TidePull.leftMarg+1, zeroLine - tideData[0]["pred"]*4*chartHeight/barCount);
 	j=0;
@@ -181,21 +183,22 @@ TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartH
 	//Put chart label//
 	context.fillStyle= "#092643";
 	context.font= TidePull.labelFont1 + "px Sans Serif";
-	context.fillText("Feet", TidePull.leftMarg*1.8, TidePull.topMarg*2.5);
+	context.fillText("Tides in Feet", TidePull.leftMarg*2.5, TidePull.topMarg*2.0);
 	//Put Y axis label//
 	context.font = TidePull.labelFont2 + "px Sans Serif";
 	context.textAlign = "right";
 	//Put some ticks, numbers on the y axis
 	context.strokeStyle = "black";
+	context.lineWidth = 1;
 	for (var yTick = 0; yTick <= maxVal; yTick+=.25){
-		context.fillText(yTick, TidePull.leftMarg-8, zeroLine - 4*yTick * chartHeight/barCount+.2*TidePull.topMarg);
+		context.fillText(yTick, TidePull.leftMarg-TidePull.Yfact, zeroLine - 4*yTick * chartHeight/barCount+.2*TidePull.topMarg);
 		context.beginPath();
 		context.moveTo(TidePull.leftMarg, zeroLine -4*yTick*chartHeight/barCount);
 		context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg, zeroLine -4*yTick*chartHeight/barCount);
 		context.stroke();
 	}
 	for (var yNTick = minVal; yNTick < 0; yNTick+=.25){
-		context.fillText(yNTick, TidePull.leftMarg-8, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.fillText(yNTick, TidePull.leftMarg-TidePull.Yfact, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.beginPath();
 		context.moveTo(TidePull.leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
