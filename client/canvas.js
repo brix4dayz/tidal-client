@@ -33,8 +33,8 @@ if (!TidePull.mobile) {
 TidePull.leftMarg = TidePull.chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
 TidePull.topMarg = TidePull.chartHeight /18; //offset btwn top of canvas and top of chart; replaces 25's
 
-TidePull.clearHeight = TidePull.chartHeight + TidePull.topMarg;
-TidePull.clearWidth = TidePull.chartWidth + TidePull.leftMarg;
+TidePull.clearHeight = TidePull.chartHeight + TidePull.topMarg+20;
+TidePull.clearWidth = TidePull.chartWidth + TidePull.leftMarg+10;
 
 (function() {
     var lastTime = 0;
@@ -110,7 +110,7 @@ TidePull.getCanvas = function() {
 TidePull.getMax = function (context, options, tideData){
 	//get Max and Min Values and round them to the upper .25 increment
 	var maxVal= .5;
-	var minVal= -.25;
+	var minVal= -.5;
 	for (i in tideData) {
 		if (tideData[i]["pred"] > maxVal){
 			maxVal = (Math.round(tideData[i]["pred"]*4)/4) +.25;
@@ -183,9 +183,12 @@ TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartH
 	//Put chart label//
 	context.fillStyle= "#092643";
 	context.font= TidePull.labelFont1 + "px Sans Serif";
-	context.fillText("Tides in Feet", TidePull.leftMarg*2.5, TidePull.topMarg*2.0);
+	context.fillText("Tides in Feet", TidePull.leftMarg*2.5, TidePull.topMarg*.8);
 	//Put Y axis label//
 	context.font = TidePull.labelFont2 + "px Sans Serif";
+	if (barCount > 15){
+		context.font = (TidePull.labelFont2-2) + "px Sans Serif";
+	}
 	context.textAlign = "right";
 	//Put some ticks, numbers on the y axis
 	context.strokeStyle = "black";
@@ -194,14 +197,14 @@ TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartH
 		context.fillText(yTick, TidePull.leftMarg-TidePull.Yfact, zeroLine - 4*yTick * chartHeight/barCount+.2*TidePull.topMarg);
 		context.beginPath();
 		context.moveTo(TidePull.leftMarg, zeroLine -4*yTick*chartHeight/barCount);
-		context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg, zeroLine -4*yTick*chartHeight/barCount);
+		context.lineTo(TidePull.leftMarg+TidePull.chartWidth, zeroLine -4*yTick*chartHeight/barCount);
 		context.stroke();
 	}
 	for (var yNTick = minVal; yNTick < 0; yNTick+=.25){
-		context.fillText(yNTick, TidePull.leftMarg-TidePull.Yfact, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.fillText(yNTick,TidePull.leftMarg-TidePull.Yfact, zeroLine - 4*yNTick* chartHeight/barCount+2);
 		context.beginPath();
 		context.moveTo(TidePull.leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
-		context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.lineTo(TidePull.leftMarg+TidePull.chartWidth, zeroLine - 4*yNTick* chartHeight/barCount);
 		context.stroke();
 	}
 	TidePull.timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight);
@@ -229,6 +232,11 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			context.arc(TidePull.leftMarg + xTick*chartWidth/12, zeroLine, 3, 0, 2*Math.PI, true);
 			context.closePath();
 			context.fill();
+			context.beginPath();
+			context.moveTo(TidePull.leftMarg+xTick*chartWidth/12, TidePull.topMarg);
+			context.lineTo(TidePull.leftMarg+xTick*chartWidth/12, TidePull.topMarg + chartHeight);
+			context.stroke();
+			context.closePath();
 			if (xTick < 6){
 				context.fillText(xTick*2+"AM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*1.2);
 			} else if (xTick == 6){
@@ -239,11 +247,14 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			}
 		}
 	} else {
-		context.font= TidePull.timeFont + "px Sans Serif";
+		context.font=(TidePull.timeFont+1) + "px Sans Serif";
 		context.fillStyle = "#092643";
 		var numDays = tideData.length/240;
 		context.textAlign = "center";
-		for(var n=0; n < numDays; n+=.5){
+		context.fillText("(Vertical lines mark every six hours)", TidePull.leftMarg+TidePull.leftMarg*6, TidePull.topMarg*.8);
+		context.font= "bold " + (TidePull.timeFont+1) + "px Sans Serif";
+		for(var n=0; n < numDays; n+=.25){
+			if (n%.5==0){
 			context.beginPath();
 			context.moveTo(TidePull.leftMarg + n*chartWidth/numDays, zeroLine);
 			context.lineTo(TidePull.leftMarg+.2*TidePull.leftMarg + n*chartWidth/numDays, zeroLine+TidePull.topMarg*.6);
@@ -253,13 +264,27 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			context.arc(TidePull.leftMarg + n*chartWidth/numDays, zeroLine, 3, 0, 2*Math.PI, true);
 			context.closePath();
 			context.fill();
+			}
+			context.beginPath();
+			context.moveTo(TidePull.leftMarg+n*chartWidth/numDays, TidePull.topMarg);
+			context.lineTo(TidePull.leftMarg+n*chartWidth/numDays, TidePull.topMarg+TidePull.chartHeight);
+			context.stroke();
+			context.closePath();
 			if ((n%1)==0){
 				context.fillText("12AM", TidePull.leftMarg*1.5 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*1.2);
-			} else {
-				context.fillText("Noon", TidePull.leftMarg*1.5 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*1.2);
+				if (n!=0){
+					context.fillText("Day" + (n+1), TidePull.leftMarg*1.4+n*chartWidth/numDays,zeroLine-TidePull.topMarg*.3);
+				}
+			} else if (n%.5==0 && n%1!=0){
+				context.fillText("Noon", TidePull.leftMarg*1.6 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*1.2);
 			}
 		}
 	}
+	context.beginPath();
+	context.moveTo(TidePull.leftMarg+TidePull.chartWidth, TidePull.topMarg)
+	context.lineTo(TidePull.leftMarg+TidePull.chartWidth, TidePull.topMarg+TidePull.chartHeight);
+	context.stroke();
+	context.closePath();
 }
 
 $('body').append("\

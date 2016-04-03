@@ -161,9 +161,9 @@ $('#getTides').on('click', function(){
 				var d2 = parseInt(TidePull.options.endDate.slice(6,8));
 				var m1 = parseInt(TidePull.options.beginDate.slice(4,6));
 				var m2 = parseInt(TidePull.options.endDate.slice(4,6));
-				if (d2>d1 && d2-d1<=7 && m2==m1){
+				if (d2>d1 && d2-d1<=6 && m2==m1){
 					goAhead = true;
-				} else if (m2-1==m1 && 30-d1+d2<=6){
+				} else if (m2-1==m1 && 30-d1+d2<=5){
 					goAhead = true;
 				} else {
 					TidePull.alerts.innerHTML = TidePull.alertArray[0];
