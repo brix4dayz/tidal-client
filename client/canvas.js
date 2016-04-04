@@ -113,10 +113,10 @@ TidePull.getMax = function (context, options, tideData){
 	var minVal= -.5;
 	for (i in tideData) {
 		if (tideData[i]["pred"] > maxVal){
-			maxVal = (Math.round(tideData[i]["pred"]*4)/4) +.25;
+			maxVal = (Math.round(tideData[i]["pred"]*2)/2) +.5;
 		};
 		if (tideData[i]["pred"] < minVal){
-			minVal = Math.round(tideData[i]["pred"]*4)/4 - .25;
+			minVal = Math.round(tideData[i]["pred"]*2)/2 - .5;
 		};	
 	}
 	TidePull.drawAxis(context, options, tideData, maxVal, minVal);
@@ -129,7 +129,12 @@ TidePull.drawAxis = function(context, options, tideData, maxVal, minVal){
 	//It depends on our range of data
 	//zeroLine marks the y value of our x axis
 	var barCount = (maxVal - minVal)/.25;
+	var increment = .25;
 	context.clearRect(0,0,TidePull.clearWidth,TidePull.clearHeight);
+	if (barCount > 20){
+		barCount = barCount*.5;
+		increment = .5;
+	}
 	for (var gridBar = 0; gridBar < barCount; gridBar++ ){
 		if (gridBar % 2 == 0){
 			context.fillStyle = "#e8f8ff";
@@ -138,7 +143,7 @@ TidePull.drawAxis = function(context, options, tideData, maxVal, minVal){
 		}
 		context.fillRect(TidePull.leftMarg+1, gridBar*TidePull.chartHeight/barCount + TidePull.topMarg, TidePull.chartWidth, TidePull.chartHeight/barCount);
 	}
-	var zeroLine = (TidePull.chartHeight*maxVal)/(barCount*.25)+TidePull.topMarg;
+	var zeroLine = (TidePull.chartHeight*maxVal)/(barCount*increment)+TidePull.topMarg;
 	context.beginPath();
 	context.moveTo(TidePull.leftMarg, TidePull.topMarg);
 	context.lineTo(TidePull.leftMarg, TidePull.chartHeight + TidePull.topMarg);
@@ -148,10 +153,10 @@ TidePull.drawAxis = function(context, options, tideData, maxVal, minVal){
 	context.strokeStyle = "#092643";
 	context.stroke();
 	
-	TidePull.plotData(context, options, tideData, TidePull.chartHeight, TidePull.chartWidth, zeroLine, barCount, maxVal, minVal);
+	TidePull.plotData(context, options, tideData, TidePull.chartHeight, TidePull.chartWidth, zeroLine, barCount, maxVal, minVal, increment);
 }
 
-TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth, zeroLine, barCount, maxVal, minVal){
+TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth, zeroLine, barCount, maxVal, minVal, increment){
 	//Plot the data and fill in the area in btwn data and axis
 	//LineTo draws the line; fillRect the area.
 	//I Plan to implement interpolation
@@ -167,19 +172,19 @@ TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth
 	context.strokeStyle = "black";
 	context.lineWidth = .1;
 	context.beginPath();
-	context.moveTo(TidePull.leftMarg+1, zeroLine - tideData[0]["pred"]*4*chartHeight/barCount);
+	context.moveTo(TidePull.leftMarg+1, zeroLine - tideData[0]["pred"]*chartHeight/(barCount*increment));
 	j=0;
 	context.fillStyle = "#a0abb6";
 	for (var i=0; i<dataLength; i++) {
-		context.lineTo(chartWidth/ttlLength*j + TidePull.leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount);
+		context.lineTo(chartWidth/ttlLength*j + TidePull.leftMarg+1, zeroLine- tideData[i]["pred"]*chartHeight/(barCount*increment));
 		context.stroke();
-		context.fillRect(chartWidth/ttlLength*j + TidePull.leftMarg+1, zeroLine- tideData[i]["pred"]*4*chartHeight/barCount, 1, tideData[i]["pred"]*4*chartHeight/barCount-1);
+		context.fillRect(chartWidth/ttlLength*j + TidePull.leftMarg+1, zeroLine- tideData[i]["pred"]*chartHeight/(barCount*increment), 1, tideData[i]["pred"]*chartHeight/(barCount*increment)-1);
 		j++;
 	}
-	TidePull.labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth);
+	TidePull.labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth, increment);
 }
 
-TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth){
+TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth, increment){
 	//Put chart label//
 	context.fillStyle= "#092643";
 	context.font= TidePull.labelFont1 + "px Sans Serif";
@@ -193,18 +198,18 @@ TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartH
 	//Put some ticks, numbers on the y axis
 	context.strokeStyle = "black";
 	context.lineWidth = 1;
-	for (var yTick = 0; yTick <= maxVal; yTick+=.25){
-		context.fillText(yTick, TidePull.leftMarg-TidePull.Yfact, zeroLine - 4*yTick * chartHeight/barCount+.2*TidePull.topMarg);
+	for (var yTick = 0; yTick <= maxVal; yTick+=increment){
+		context.fillText(yTick, TidePull.leftMarg-TidePull.Yfact, zeroLine - yTick * chartHeight/(barCount*increment)+.2*TidePull.topMarg);
 		context.beginPath();
-		context.moveTo(TidePull.leftMarg, zeroLine -4*yTick*chartHeight/barCount);
-		context.lineTo(TidePull.leftMarg+TidePull.chartWidth, zeroLine -4*yTick*chartHeight/barCount);
+		context.moveTo(TidePull.leftMarg, zeroLine -yTick*chartHeight/(barCount*increment));
+		context.lineTo(TidePull.leftMarg+TidePull.chartWidth, zeroLine -yTick*chartHeight/(barCount*increment));
 		context.stroke();
 	}
-	for (var yNTick = minVal; yNTick < 0; yNTick+=.25){
-		context.fillText(yNTick,TidePull.leftMarg-TidePull.Yfact, zeroLine - 4*yNTick* chartHeight/barCount+2);
+	for (var yNTick = minVal; yNTick < 0; yNTick+=increment){
+		context.fillText(yNTick,TidePull.leftMarg-TidePull.Yfact, zeroLine - yNTick* chartHeight/(barCount*increment)+2);
 		context.beginPath();
-		context.moveTo(TidePull.leftMarg, zeroLine - 4*yNTick* chartHeight/barCount);
-		context.lineTo(TidePull.leftMarg+TidePull.chartWidth, zeroLine - 4*yNTick* chartHeight/barCount);
+		context.moveTo(TidePull.leftMarg, zeroLine - yNTick* chartHeight/(barCount*increment));
+		context.lineTo(TidePull.leftMarg+TidePull.chartWidth, zeroLine - yNTick* chartHeight/(barCount*increment));
 		context.stroke();
 	}
 	TidePull.timeAxis(context, options, chartWidth, zeroLine, tideData, chartHeight);
@@ -225,7 +230,7 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 		for (var xTick = 1; xTick < 12; xTick++){
 			context.beginPath();
 			context.moveTo(TidePull.leftMarg + xTick*chartWidth/12, zeroLine);
-			context.lineTo(TidePull.leftMarg+.32*TidePull.leftMarg + xTick*chartWidth/12, zeroLine+TidePull.topMarg*.6);
+			context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg + xTick*chartWidth/12, zeroLine+TidePull.topMarg*.3);
 			context.stroke();
 			context.closePath();
 			context.beginPath();
@@ -238,12 +243,12 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			context.stroke();
 			context.closePath();
 			if (xTick < 6){
-				context.fillText(xTick*2+"AM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*1.2);
+				context.fillText(xTick*2+"AM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*.8);
 			} else if (xTick == 6){
-				context.fillText(xTick*2+"PM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*1.2);
+				context.fillText(xTick*2+"PM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*.8);
 			}
 			else{
-				context.fillText(xTick%6*2+"PM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*1.2);
+				context.fillText(xTick%6*2+"PM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*.8);
 			}
 		}
 	} else {
@@ -257,7 +262,7 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			if (n%.5==0){
 			context.beginPath();
 			context.moveTo(TidePull.leftMarg + n*chartWidth/numDays, zeroLine);
-			context.lineTo(TidePull.leftMarg+.2*TidePull.leftMarg + n*chartWidth/numDays, zeroLine+TidePull.topMarg*.6);
+			context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg + n*chartWidth/numDays, zeroLine+TidePull.topMarg*.3);
 			context.stroke();
 			context.closePath();
 			context.beginPath();
@@ -271,12 +276,12 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			context.stroke();
 			context.closePath();
 			if ((n%1)==0){
-				context.fillText("12AM", TidePull.leftMarg*1.5 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*1.2);
+				context.fillText("12AM", TidePull.leftMarg*1.5 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*.8);
 				if (n!=0){
 					context.fillText("Day" + (n+1), TidePull.leftMarg*1.4+n*chartWidth/numDays,zeroLine-TidePull.topMarg*.3);
 				}
 			} else if (n%.5==0 && n%1!=0){
-				context.fillText("Noon", TidePull.leftMarg*1.6 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*1.2);
+				context.fillText("Noon", TidePull.leftMarg*1.6 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*.8);
 			}
 		}
 	}
