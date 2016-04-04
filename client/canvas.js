@@ -190,7 +190,7 @@ TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth
 
 TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth, increment){
 	//Put chart label//
-	context.fillStyle= "#092643";
+	context.fillStyle= "#033a0f";
 	context.textAlign = "left";
 	context.font= TidePull.labelFont1 + "px Sans Serif";
 	context.fillText("Tides in Feet", TidePull.leftMarg+5, TidePull.topMarg*.8);
@@ -219,20 +219,30 @@ TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartH
 
 TidePull.highLow = function(context, tideData){
 	var high = tideData[0];
-	var low = high;
+	var low = tideData[0];
+	var neg = false;
 	for (var i=0; i<tideData.length; i++) {
 		if (tideData[i]["pred"]> high["pred"]) {
 			high = tideData[i];
 		}
-		if (tideData[i]["pred"]< low["pred"]){
-			low = tideData[i];
+		if (neg==false){
+			if (tideData[i]["pred"]< low["pred"]){
+				low = tideData[i];
+			}
 		}
+		if (tideData[i]["pred"]< 0){
+			neg = true;
+			if (tideData[i]["pred"]> low["pred"]) {
+			low = tideData[i];
+			}
+		}
+		
 	}
 	var dateH = JSON.stringify(high["timeStamp"]);
 	var dateL = JSON.stringify(low["timeStamp"]);
 	var readOut =("High: " + high["pred"] + " at " + dateH.slice(13,18) + "  Low: " + low["pred"] + " at " + dateL.slice(13,18));
 	context.textAlign = "right";
-	context.fillStyle= "#092643";
+	context.fillStyle= "#033a0f";
 	context.font= TidePull.labelFont1 + "px Sans Serif";
 	context.fillText(readOut, TidePull.leftMarg + TidePull.chartWidth, TidePull.topMarg*.8)
 }
@@ -247,7 +257,7 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 	if (tideData.length == 240) {
 		context.font = TidePull.timeFont + "px Sans Serif";
 		context.strokeStyle = "#092643";
-		context.fillStyle = "#092643";
+		context.fillStyle = "#033a0f";
 		context.textAlign = "center";
 		for (var xTick = 1; xTick < 12; xTick++){
 			context.beginPath();
@@ -274,8 +284,8 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 			}
 		}
 	} else {
-		context.font=(TidePull.timeFont+1) + "px Sans Serif";
-		context.fillStyle = "#092643";
+		context.font=(TidePull.timeFont+2) + "px Sans Serif";
+		context.fillStyle = "Green";
 		var numDays = tideData.length/240;
 		context.textAlign = "right";
 		context.fillText("(Vertical lines mark every six hours)", TidePull.leftMarg+TidePull.chartWidth, TidePull.topMarg*.8);
