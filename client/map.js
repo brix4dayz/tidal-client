@@ -48,8 +48,13 @@ function map() {
             TidePull.coordinates = {};
             //console.log("Printing first point: " + coordinates["0"]["lat"] + "," + coordinates["0"]["lng"]);
 			var key = null;
+			var newOpt = null;
+			var portList = document.getElementById("promptD");
 			for (var i in data.locations) {
                 key = data.locations[i]['name'];
+				newOpt = document.createElement("option");
+				newOpt.innerHTML = key;
+				portList.appendChild(newOpt);
                 TidePull.coordinates[key] = {
                     'id': data.locations[i]['stationId'],
                     'position': { lat: data.locations[i]['lat'], lng: data.locations[i]['lng']}

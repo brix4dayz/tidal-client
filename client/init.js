@@ -48,6 +48,7 @@ if (!TidePull.mobile) {
   			  <p id=\"promptA\"> Date: <input type=\"click\" id=\"datepickerA\"></p>\
   			  <p id=\"promptB\"> Start Date: <input type=\"click\" id=\"datepickerB\"></p>\
   			  <p id=\"promptC\"> End  Date:  <input type=\"click\" id=\"datepickerC\"></p>\
+			  <select id=\"promptD\">Port List</select>\
   			</ul>\
   		</div>\
   		<p class=\"btn btn-sm\" id=\"getTides\">Get Tides</p>\
@@ -78,6 +79,7 @@ if (!TidePull.mobile) {
           <p id=\"promptA\"> Date: <input type=\"click\" id=\"datepickerA\"></p>\
           <p id=\"promptB\"> Start Date: <input type=\"click\" id=\"datepickerB\"></p>\
           <p id=\"promptC\"> End  Date:  <input type=\"click\" id=\"datepickerC\"></p>\
+		  <select id=\"promptD\"></select>\
         </ul>\
       </div>\
       <p class=\"btn btn-sm\" id=\"getTides\">Get Tides</p>\
