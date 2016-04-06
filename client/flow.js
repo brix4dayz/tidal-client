@@ -205,6 +205,12 @@ $('#returnBtn').on('click', function() {
 		$('#returnBtn').hide(300);
 });
 
+$('#promptD').on('change', function() {
+  var sel = document.getElementById("promptD");
+  google.maps.event.trigger(TidePull.markers[sel.value], 'click');
+  TidePull.map.setCenter(TidePull.markers[sel.value].position);
+});
+
 /**
  * Datepickers.
  */

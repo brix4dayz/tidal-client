@@ -89,6 +89,4 @@ if (!TidePull.mobile) {
       <p id=\"alerts\"></p>\
       </div>");
 
-  document.body.innerHTML += "<p>Mobile Mode!</p>";
-
 }

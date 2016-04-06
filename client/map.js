@@ -36,6 +36,8 @@ function map() {
                 streetViewControl:false
             });
 
+            TidePull.map = map;
+
             /**
              * once jQuery has loaded the JSON file
              * it calls this function, putting the object
@@ -50,6 +52,9 @@ function map() {
 			var key = null;
 			var newOpt = null;
 			var portList = document.getElementById("promptD");
+            newOpt = document.createElement("option");
+            newOpt.innerHTML = "---------";
+            portList.appendChild(newOpt);
 			for (var i in data.locations) {
                 key = data.locations[i]['name'];
 				newOpt = document.createElement("option");
@@ -83,10 +88,12 @@ function map() {
                                 TidePull.selectedKey = innerKey;
 								TidePull.markers[innerKey].setAnimation(google.maps.Animation.BOUNCE);
                                 document.getElementById("portSelection").innerHTML = "<h3>You have selected: " + innerKey + "</h3>";
-							} else { // turn off, tell them to choose a port
+                                $('#promptD').val(innerKey);
+                            } else { // turn off, tell them to choose a port
                                 TidePull.selectedKey = null;
 								TidePull.markers[innerKey].setAnimation(null);
                                 document.getElementById("portSelection").innerHTML = "<h3>Choose port by selecting a map pin:</h3>";
+                                $('#promptD').val("---------");
                             }
 						};
 					}(key)
