@@ -93,7 +93,7 @@ function map() {
                                 TidePull.selectedKey = null;
 								TidePull.markers[innerKey].setAnimation(null);
                                 document.getElementById("portSelection").innerHTML = "<h3>Choose port by selecting a map pin:</h3>";
-                                $('#promptD').val("---------");
+                                $('#promptD').val("---------"); // SHOULD WE CHANGE THIS TO SOMETHING MORE PROFESSIONAL?
                             }
 						};
 					}(key)

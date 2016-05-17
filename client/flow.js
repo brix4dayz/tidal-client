@@ -44,7 +44,7 @@ TidePull.requestTides = function() {
   TidePull.context.fillStyle = "#000000";
   TidePull.context.font= "18px Sans Serif";
   TidePull.context.textAlign = "center";
-  TidePull.context.fillText("Loading...", TidePull.chartHeight*.5, TidePull.chartWidth*.5);
+  TidePull.context.fillText("Loading...", TidePull.chartHeight*0.5, TidePull.chartWidth*0.5);
 
   // Make the POST request
   if (!TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]]) {
