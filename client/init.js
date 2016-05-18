@@ -39,7 +39,7 @@ if (!TidePull.mobile) {
           <h3>Choose a port by selecting a map pin:</h3>\
         </div>\
         <div id=\"map\"></div>\
-  	  <div id=\"plotter\"><canvas width=\"540\" height=\"400\" id=\"tideCanvas\"></canvas></div>\
+  	  <div id=\"plotter\"><canvas width=\"540\" height=\"510\" id=\"tideCanvas\"></canvas></div>\
   	  <div class=\"container\" id=\"selectdate\">\
   		<div class=\"row\" id=\"selectors\">\
   			<p class=\"btn btn-info btn-sm\" id=\"oneDay\">Tides for one Day</p>\
