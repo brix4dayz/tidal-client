@@ -163,13 +163,15 @@ $('#getTides').on('click', function(){
 			TidePull.options.endDate.setMinutes(59);
 			TidePull.options.endDate = TidePull.options.endDate.noaaDate();
 			TidePull.options.interval = "06";
-      TidePull.options.sevenDays = {
+      TidePull.options['sevenDays'] = {
         'location': TidePull.options['location'], 
         'id': TidePull.options['id'], 
         'beginDate': past.noaaDate(),
         'endDate': future.noaaDate(),
         'interval': "60"
       };
+      // console.log(TidePull.options['sevenDays']['beginDate']);
+      // console.log(TidePull.options['sevenDays']['endDate']);
 			goAhead = true;
 		} else {
 			TidePull.alerts.innerHTML = TidePull.alertArray[2];

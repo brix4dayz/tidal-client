@@ -25,7 +25,7 @@ var TidePull = {};
 } ());
 
 
-TidePull.SERVER = "//localhost:3000";
+TidePull.SERVER = "//45.33.68.196:80";
 
 if (!TidePull.mobile) {
 
