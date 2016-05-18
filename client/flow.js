@@ -47,12 +47,12 @@ TidePull.requestTides = function() {
   TidePull.context.fillText("Loading...", TidePull.chartHeight*0.5, TidePull.chartWidth*0.5);
 
   // Make the POST request
-  if (!TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]]) {
+  if (!TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"]]) {
       while (Object.keys(TidePull.requestCache).length >= TidePull.CACHE_MAX) {
         console.log("Removing a cached request...");
         delete TidePull.requestCache[TidePull.randomKey(TidePull.requestCache)];
       }
-      TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]] = $.ajax({
+      TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"]] = $.ajax({
         type: "POST",
         url: TidePull.SERVER + "/tides",
         contentType: "application/json",
@@ -62,19 +62,19 @@ TidePull.requestTides = function() {
       }).promise();
   }
   
-  TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]].done(
+  TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"]].done(
     function( data, status, xhr ) {
       var obj = JSON.parse(xhr.responseText);
 
       //console.log(obj["soapenv:Envelope"]["soapenv:Body"][0]["PredictionsAndMetadata"][0]["stationName"][0]);
 
-      TidePull.tideData = obj["soapenv:Envelope"]["soapenv:Body"][0]["PredictionsAndMetadata"][0]["data"][0]["item"];
+      TidePull.tideData = obj['oneDay'];
       TidePull.first = true;
       TidePull.stop = false;
       TidePull.getCanvas();
   });
 
-  TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"] + TidePull.options["endDate"]].fail(function( error ){
+  TidePull.requestCache[TidePull.options['location'] + TidePull.options["beginDate"]].fail(function( error ){
     // Log any error.
     console.log( "ERROR:", error );
   });
@@ -147,43 +147,32 @@ $('#getTides').on('click', function(){
 		TidePull.options = {'location': TidePull.selectedKey, 'id': TidePull.coordinates[TidePull.selectedKey]['id']};
 		// pass more than location and id
 		var goAhead = false;
-		if (TidePull.isMultipleDays) {
-			if ($('#datepickerB').datepicker('getDate')!==null && $('#datepickerC').datepicker('getDate')!==null){
-				TidePull.options.beginDate = $('#datepickerB').datepicker('getDate').noaaDate();
-				TidePull.options.endDate = $('#datepickerC').datepicker('getDate');
-				TidePull.options.endDate.setHours(23);
-				TidePull.options.endDate.setMinutes(59);
-				TidePull.options.endDate = TidePull.options.endDate.noaaDate();
-				//Make sure they select a date range thats valid
-				//No more than seven days
-				//Begin date is before end date
-				var d1 = parseInt(TidePull.options.beginDate.slice(6,8));
-				var d2 = parseInt(TidePull.options.endDate.slice(6,8));
-				var m1 = parseInt(TidePull.options.beginDate.slice(4,6));
-				var m2 = parseInt(TidePull.options.endDate.slice(4,6));
-				if (d2>d1 && d2-d1<=6 && m2==m1){
-					goAhead = true;
-				} else if (m2-1==m1 && 30-d1+d2<=5){
-					goAhead = true;
-				} else {
-					TidePull.alerts.innerHTML = TidePull.alertArray[0];
-				};
-			} else {
-				TidePull.alerts.innerHTML = TidePull.alertArray[1];
-			}
+		if ($('#datepickerA').datepicker('getDate')!==null){
+      var theirDate = $('#datepickerA').datepicker('getDate');
+      var past = new Date();
+      var future = new Date();
+      past.setDate(theirDate.getDate() - 3);
+      past.setHours(0);
+      past.setMinutes(0);
+      future.setDate(theirDate.getDate() + 3);
+      future.setHours(23);
+      future.setMinutes(59);
+			TidePull.options.beginDate = theirDate.noaaDate();
+			TidePull.options.endDate = theirDate;
+			TidePull.options.endDate.setHours(23);
+			TidePull.options.endDate.setMinutes(59);
+			TidePull.options.endDate = TidePull.options.endDate.noaaDate();
 			TidePull.options.interval = "06";
+      TidePull.options.sevenDays = {
+        'location': TidePull.options['location'], 
+        'id': TidePull.options['id'], 
+        'beginDate': past.noaaDate(),
+        'endDate': future.noaaDate(),
+        'interval': "60"
+      };
+			goAhead = true;
 		} else {
-			if ($('#datepickerA').datepicker('getDate')!==null){
-				TidePull.options.beginDate = $('#datepickerA').datepicker('getDate').noaaDate();
-				TidePull.options.endDate = $('#datepickerA').datepicker('getDate');
-				TidePull.options.endDate.setHours(23);
-				TidePull.options.endDate.setMinutes(59);
-				TidePull.options.endDate = TidePull.options.endDate.noaaDate();
-				TidePull.options.interval = "06";
-				goAhead = true;
-			} else {
-				TidePull.alerts.innerHTML = TidePull.alertArray[2];
-			}
+			TidePull.alerts.innerHTML = TidePull.alertArray[2];
 		}
 		if (goAhead){
 			TidePull.alerts.innerHTML = "";
