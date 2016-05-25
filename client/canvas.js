@@ -33,8 +33,11 @@ if (!TidePull.mobile) {
 TidePull.leftMarg = TidePull.chartWidth * .0714; //offset btwn left side and y axis bar; replaces 50's
 TidePull.topMarg = TidePull.chartHeight /18; //offset btwn top of canvas and top of chart; replaces 25's
 
-TidePull.clearHeight = TidePull.chartHeight + TidePull.topMarg+20;
-TidePull.clearWidth = TidePull.chartWidth + TidePull.leftMarg+10;
+//TidePull.clearHeight = TidePull.chartHeight + TidePull.topMarg+20;
+//TidePull.clearWidth = TidePull.chartWidth + TidePull.leftMarg+10;
+
+TidePull.clearHeight = 510;
+TidePull.clearWidth = 540;
 
 (function() {
     var lastTime = 0;
@@ -100,11 +103,12 @@ TidePull.getCanvas = function() {
 	if (!TidePull.stop) {
 		requestAnimationFrame(TidePull.getCanvas);
 		TidePull.getMax(TidePull.context, TidePull.options, TidePull.tideData);
+		TidePull.sevenDay(TidePull.context, TidePull.options, TidePull.tideData);
 	} else {
 		TidePull.tideData = null;
 		TidePull.options = null;
 	}
-
+	
 }
 
 TidePull.getMax = function (context, options, tideData){
@@ -186,6 +190,62 @@ TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth
 		j++;
 	}
 	TidePull.labelAxis(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth, increment);
+}
+
+TidePull.sevenDay = function (context, options, tideData) {
+	
+	//make middle block blue
+	context.fillStyle = "#e8f8ff";
+	context.fillRect(TidePull.leftMarg + 3*TidePull.chartWidth/7, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07, TidePull.chartWidth/7, TidePull.chartHeight*.25);
+	//context.fillRect(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07, TidePull.chartWidth, TidePull.chartHeight*.25);
+	//draw border on seven day block
+	context.beginPath();
+	context.moveTo(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07);
+	context.lineTo(TidePull.leftMarg + TidePull.chartWidth, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07);
+	context.lineTo(TidePull.leftMarg + TidePull.chartWidth, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07 + TidePull.chartHeight*.25);
+	context.lineTo(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07 + TidePull.chartHeight*.25);
+	context.lineTo(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07);
+	context.strokeStyle = "black";
+	context.lineWidth = .2;
+	context.stroke();
+	
+	//draw 7 blocks
+	context.moveTo(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07);
+	for (var i = 1; i <= 7; i+=1){
+		context.moveTo(TidePull.leftMarg + i*TidePull.chartWidth/7, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07);
+		context.lineTo(TidePull.leftMarg + i*TidePull.chartWidth/7, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07 + TidePull.chartHeight*.25);
+		context.stroke();
+	}
+	
+	
+	//get max for week
+	var maxVal= .5;
+	var minVal= -.5;
+	for (i in tideData) {
+		if (tideData[i]["pred"] > maxVal){
+			maxVal = (Math.round(tideData[i]["pred"]*2)/2) +.5;
+		};
+		if (tideData[i]["pred"] < minVal){
+			minVal = Math.round(tideData[i]["pred"]*2)/2 - .5;
+		};	
+	}
+	
+	//console.log(maxVal, minVal);
+	
+	//plot week
+	var sevLength = tideData.length;
+	var span = maxVal - minVal;
+	context.strokeStyle = "black";
+	context.lineWidth = .1;
+	context.beginPath();
+	context.moveTo(TidePull.leftMarg+1, TidePull.topMarg+TidePull.chartHeight+TidePull.chartHeight*.07+TidePull.chartHeight*.125 - tideData[0]["pred"]*TidePull.chartHeight*.125/span);
+	context.fillStyle = "#a0abb6";
+	for (var i=1; i<sevLength; i++) {
+		context.lineTo(i*TidePull.chartWidth/sevLength + TidePull.leftMarg+1, TidePull.topMarg+TidePull.chartHeight+TidePull.chartHeight*.07+TidePull.chartHeight*.125- tideData[i]["pred"]*TidePull.chartHeight*.125/span);
+		context.stroke();
+	}
+	
+	
 }
 
 TidePull.labelAxis = function(context, options, tideData, maxVal, minVal, chartHeight, barCount, zeroLine, chartWidth, increment){
