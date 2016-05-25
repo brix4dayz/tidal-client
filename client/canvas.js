@@ -103,7 +103,7 @@ TidePull.getCanvas = function() {
 	if (!TidePull.stop) {
 		requestAnimationFrame(TidePull.getCanvas);
 		TidePull.getMax(TidePull.context, TidePull.options, TidePull.tideData);
-		TidePull.sevenDay(TidePull.context, TidePull.options, TidePull.tideData);
+		TidePull.sevenDay(TidePull.context, TidePull.options, TidePull.tideData7);
 	} else {
 		TidePull.tideData = null;
 		TidePull.options = null;

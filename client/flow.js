@@ -14,6 +14,7 @@ TidePull.CACHE_MAX = 10;
 
 TidePull.options = null;
 TidePull.tideData = null;
+TidePull.tideData7 = null;
 
 TidePull.PLOT_TIME = 1.0;
 TidePull.first = true;
@@ -69,6 +70,7 @@ TidePull.requestTides = function() {
       //console.log(obj["soapenv:Envelope"]["soapenv:Body"][0]["PredictionsAndMetadata"][0]["stationName"][0]);
 
       TidePull.tideData = obj['oneDay'];
+      TidePull.tideData7 = obj['sevenDays']
       TidePull.first = true;
       TidePull.stop = false;
       TidePull.getCanvas();
