@@ -37,7 +37,7 @@ TidePull.topMarg = TidePull.chartHeight /18; //offset btwn top of canvas and top
 //TidePull.clearWidth = TidePull.chartWidth + TidePull.leftMarg+10;
 
 TidePull.clearHeight = 510;
-TidePull.clearWidth = 540;
+TidePull.clearWidth = 526;
 
 (function() {
     var lastTime = 0;
@@ -153,7 +153,7 @@ TidePull.drawAxis = function(context, options, tideData, maxVal, minVal){
 	context.lineTo(TidePull.leftMarg, TidePull.chartHeight + TidePull.topMarg);
 	context.moveTo(TidePull.leftMarg, zeroLine);
 	context.lineTo(TidePull.chartWidth + TidePull.leftMarg, zeroLine);
-	context.lineWidth = 2;
+	context.lineWidth = 3;
 	context.strokeStyle = "#092643";
 	context.stroke();
 	
@@ -195,7 +195,7 @@ TidePull.plotData = function(context, options, tideData, chartHeight, chartWidth
 TidePull.sevenDay = function (context, options, tideData) {
 	
 	//make middle block blue
-	context.fillStyle = "#e8f8ff";
+	context.fillStyle = "#96c2e3";
 	context.fillRect(TidePull.leftMarg + 3*TidePull.chartWidth/7, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07, TidePull.chartWidth/7, TidePull.chartHeight*.25);
 	//context.fillRect(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07, TidePull.chartWidth, TidePull.chartHeight*.25);
 	//draw border on seven day block
@@ -206,7 +206,7 @@ TidePull.sevenDay = function (context, options, tideData) {
 	context.lineTo(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07 + TidePull.chartHeight*.25);
 	context.lineTo(TidePull.leftMarg, TidePull.topMarg + TidePull.chartHeight+ TidePull.chartHeight*.07);
 	context.strokeStyle = "black";
-	context.lineWidth = .2;
+	context.lineWidth = .5;
 	context.stroke();
 	
 	//draw 7 blocks
@@ -230,21 +230,62 @@ TidePull.sevenDay = function (context, options, tideData) {
 		};	
 	}
 	
+	var span = maxVal - minVal;
+	var zeroLine= maxVal*TidePull.chartHeight*.25/span;
+	
+	//get actual max
+	var high = tideData[0];
+	var low = tideData[0];
+	var neg = false;
+	for (var i=0; i<tideData.length; i++) {
+		if (tideData[i]["pred"]> high["pred"]) {
+			high = tideData[i];
+		}
+		if (neg==false){
+			if (tideData[i]["pred"]< low["pred"]){
+				low = tideData[i];
+			}
+		}
+		if (tideData[i]["pred"]< 0){
+			neg = true;
+			if (tideData[i]["pred"]> low["pred"]) {
+			low = tideData[i];
+			}
+		}
+		
+	}
+	
 	//console.log(maxVal, minVal);
+	//console.log(high, low);
+	//console.log(zeroLine);
+	
+	var dateH = JSON.stringify(high["timeStamp"]);
+	var dateL = JSON.stringify(low["timeStamp"]);
+	var readOut =("Weekly High: " + high["pred"] + " at " + dateH.slice(2,18) + "  Low: " + low["pred"] + " at " + dateL.slice(2,18));
+	context.textAlign = "right";
+	context.fillStyle= "#d60a0f";
+	context.font= TidePull.labelFont1 + "px Sans Serif";
+	context.fillText(readOut, TidePull.leftMarg + TidePull.chartWidth, TidePull.topMarg*.8+TidePull.chartHeight*1.065);
 	
 	//plot week
 	var sevLength = tideData.length;
-	var span = maxVal - minVal;
 	context.strokeStyle = "black";
-	context.lineWidth = .1;
+	context.lineWidth = .5;
 	context.beginPath();
-	context.moveTo(TidePull.leftMarg+1, TidePull.topMarg+TidePull.chartHeight+TidePull.chartHeight*.07+TidePull.chartHeight*.125 - tideData[0]["pred"]*TidePull.chartHeight*.125/span);
+	context.moveTo(TidePull.leftMarg+1, TidePull.topMarg+TidePull.chartHeight+TidePull.chartHeight*.07+zeroLine - tideData[0]["pred"]*TidePull.chartHeight*.25/span);
 	context.fillStyle = "#a0abb6";
 	for (var i=1; i<sevLength; i++) {
-		context.lineTo(i*TidePull.chartWidth/sevLength + TidePull.leftMarg+1, TidePull.topMarg+TidePull.chartHeight+TidePull.chartHeight*.07+TidePull.chartHeight*.125- tideData[i]["pred"]*TidePull.chartHeight*.125/span);
+		context.lineTo(i*TidePull.chartWidth/sevLength + TidePull.leftMarg+1, TidePull.topMarg+TidePull.chartHeight+TidePull.chartHeight*.07+zeroLine- tideData[i]["pred"]*TidePull.chartHeight*.25/span);
 		context.stroke();
 	}
 	
+	// label 7 day limits
+	context.fillStyle= "#d60a0f";
+	context.font = TidePull.labelFont2 + "px Sans Serif";
+	context.textAlign = "right";
+	context.fillText(maxVal, TidePull.leftMarg-TidePull.Yfact, TidePull.topMarg*.8+TidePull.chartHeight*1.07+TidePull.chartHeight*.03);
+	context.fillText(minVal, TidePull.leftMarg-TidePull.Yfact, TidePull.topMarg*.8+TidePull.chartHeight*1.07+TidePull.chartHeight*.27);
+
 	
 }
 
