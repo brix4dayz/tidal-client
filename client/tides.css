@@ -1,18 +1,20 @@
 html, body {
   height: 100%;
+  margin: 50px;
 }
 
-#tideApp{  font-family:Verdana;}
+#tideApp{  font-family:Verdana; background-color: #f5f5f5; width: 550px;}
 
 #map {
   height: 400px; width: 550px;
   padding-left: 0;
   padding-right: 0;
-  border-left:solid;
-  border-right:solid;
+  border: solid;
   border-width: 2px;
   border-color: #777777;
 }
+
+#top {height: 10px; width: 550px; border: solid; border-width: 2px; border-color: #777777; background-color:#03396c;}
 
 #selectdate {
   background-color: #03396c;
@@ -27,36 +29,19 @@ html, body {
 
 #alerts {color:#dd0e0e; font-family: Verdana; font-size: 18px;}
 
-#promptA , #promptB, #promptC{background-color: #e0eeee; border:solid; padding-left:5px;
+#promptA {background-color: #e0eeee; border:solid; 
   border-color: #777777;
   border-width: 2px;
-  margin-right: 10px;
   font-weight: bold;}
 
-#portSelection {
-  border:solid;
-  height: auto;
-  width:550px;
-  border-width: 2px;
-  border-color:#777777;
-  background-color: 	#03396c;
-  color: #e0eeee;
-  padding-top: 0px;
-  padding: 10px;
-  text-align: center;
-}
-
-
-
-#getTides {background:	#008000; margin-bottom:3px; color: #e0eeee; font-family: Verdana;} 
+#getTides {background:	#008000; color: #e0eeee; font-family: Verdana;} 
 #returnBtn {background:	#6497b1;}
 
 #plotter {
 	width: 550px;
   padding-left: 0;
   padding-right: 0;
-  border-left:solid;
-  border-right:solid;
+  border: solid;
   border-width: 2px;
   border-color: #777777;
 }
@@ -65,11 +50,8 @@ html, body {
 
 #tideCanvas {margin-left: 10px;}
 
-#selectors {margin-left: 0px; margin-top: 5px; margin-bottom: 5px;}
+#selectors {width: 200px;}
 
-#oneDay {background:	#6497b1;}
-
-#multDay {background:#6497b1;}
 
 #app {
 	width: 550px;
@@ -77,11 +59,9 @@ html, body {
 	margin-right: auto;
 }
 
-  #promptD{background-color: #e0eeee; border:solid; padding-left:5px;
+  #promptD{background-color: #e0eeee; border:solid;
   width: 300px;
     border-color: #777777;
     height: 27px;
     border-width: 2px;
-    margin-right: 10px;
-    margin-top: 5px;
     font-weight: bold;}

@@ -220,7 +220,7 @@ TidePull.sevenDay = function (context, options, tideData) {
 	
 	//get max for week
 	var maxVal= .5;
-	var minVal= -.5;
+	var minVal= 0;
 	for (i in tideData) {
 		if (tideData[i]["pred"] > maxVal){
 			maxVal = (Math.round(tideData[i]["pred"]*2)/2) +.5;
@@ -353,9 +353,6 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 	//If one day, we describe the time every two hours
 	//If multDats, we describe noon and 12am
 
-
-
-	if (tideData.length == 240) {
 		context.font = TidePull.timeFont + "px Sans Serif";
 		context.strokeStyle = "#092643";
 		context.fillStyle = "#d60a0f";
@@ -384,41 +381,6 @@ TidePull.timeAxis = function(context, options, chartWidth, zeroLine, tideData, c
 				context.fillText(xTick%6*2+"PM", TidePull.leftMarg*1.6+xTick*chartWidth/12, zeroLine+TidePull.topMarg*.8);
 			}
 		}
-	} else {
-		context.font=(TidePull.timeFont+2) + "px Sans Serif";
-		context.fillStyle = "#d60a0f";
-		var numDays = tideData.length/240;
-		context.textAlign = "right";
-		context.fillText("(Vertical lines mark every six hours)", TidePull.leftMarg+TidePull.chartWidth, TidePull.topMarg*.8);
-		context.textAlign = "center";
-		context.font= "bold " + (TidePull.timeFont+1) + "px Sans Serif";
-		for(var n=0; n < numDays; n+=.25){
-			if (n%.5==0){
-			context.beginPath();
-			context.moveTo(TidePull.leftMarg + n*chartWidth/numDays, zeroLine);
-			context.lineTo(TidePull.leftMarg+.1*TidePull.leftMarg + n*chartWidth/numDays, zeroLine+TidePull.topMarg*.3);
-			context.stroke();
-			context.closePath();
-			context.beginPath();
-			context.arc(TidePull.leftMarg + n*chartWidth/numDays, zeroLine, 3, 0, 2*Math.PI, true);
-			context.closePath();
-			context.fill();
-			}
-			context.beginPath();
-			context.moveTo(TidePull.leftMarg+n*chartWidth/numDays, TidePull.topMarg);
-			context.lineTo(TidePull.leftMarg+n*chartWidth/numDays, TidePull.topMarg+TidePull.chartHeight);
-			context.stroke();
-			context.closePath();
-			if ((n%1)==0){
-				context.fillText("12AM", TidePull.leftMarg*1.6 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*.8);
-				if (n!=0){
-					context.fillText("Day" + (n+1), TidePull.leftMarg*1.6+n*chartWidth/numDays,zeroLine-TidePull.topMarg*.3);
-				}
-			} else if (n%.5==0 && n%1!=0){
-				context.fillText("Noon", TidePull.leftMarg*1.6 + n*chartWidth/numDays, zeroLine + TidePull.topMarg*.8);
-			}
-		}
-	}
 	context.beginPath();
 	context.moveTo(TidePull.leftMarg+TidePull.chartWidth, TidePull.topMarg)
 	context.lineTo(TidePull.leftMarg+TidePull.chartWidth, TidePull.topMarg+TidePull.chartHeight);

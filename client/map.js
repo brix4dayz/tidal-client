@@ -87,12 +87,10 @@ function map() {
 							if (TidePull.markers[innerKey].animation === null) {
                                 TidePull.selectedKey = innerKey;
 								TidePull.markers[innerKey].setAnimation(google.maps.Animation.BOUNCE);
-                                document.getElementById("portSelection").innerHTML = "<h3>You have selected: " + innerKey + "</h3>";
                                 $('#promptD').val(innerKey);
                             } else { // turn off, tell them to choose a port
                                 TidePull.selectedKey = null;
 								TidePull.markers[innerKey].setAnimation(null);
-                                document.getElementById("portSelection").innerHTML = "<h3>Choose port by selecting a map pin:</h3>";
                                 $('#promptD').val("---------"); // SHOULD WE CHANGE THIS TO SOMETHING MORE PROFESSIONAL?
                             }
 						};

@@ -98,40 +98,10 @@ Date.prototype.noaaDate = function () {
 TidePull.isMultipleDays = false;
 
 /** Hide canvas and return button. */
+$('#promptA').show();
 $('#plotter').hide();
 $('#returnBtn').hide();
 
-/**
-*This page organizes the sequence of our app
-*setting up the first page as the map and date selection
-*and the second page as the canvas rendering of tide data.
-*/
-
-/**
-*choosing button #oneday makes the other disappear and
-*the prompt to choose a day appear
-*/
-$('#oneDay').on('click', function(){
-	$('#multDay').toggle(300);
-	$('#promptA').toggle(300);
-	TidePull.isMultipleDays = false;
-})	
-
-/**
-*choosing button #multDay makes the other disappear and 
-*the prompt to choose first and final day appear
-*/
-$('#multDay').on('click', function(){
-	$('#oneDay').toggle(300);
-	$('#promptB').toggle(300);
-	$('#promptC').toggle(300);
-	TidePull.isMultipleDays = true;
-})	
-
-/**hides things that don't show before time button is selected**/
-$('#promptA').hide();
-$('#promptB').hide();
-$('#promptC').hide();
 
 /**Once #getTides is clicked, map and selection block disappear
 and canvas comes into display**/
@@ -210,16 +180,6 @@ $('#promptD').on('change', function() {
 $(function() {
 	$( "#datepickerA" ).datepicker();
 	});
-$(function() {
-    $( "#datepickerB" ).datepicker();
-	});
-$(function() {
-    $( "#datepickerC" ).datepicker();
-	});
-//$(function() {
-	//$("#promptD").selectmenu()
-	//.selectmenu("menuWidget")
-	//.addClass("overflow");
-//});
+
 
 

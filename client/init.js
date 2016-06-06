@@ -29,33 +29,24 @@ TidePull.SERVER = "//45.33.68.196:80";
 
 if (!TidePull.mobile) {
 
-  TidePull.appendStyle("https://rawgithub.com/brix4dayz/tidal-client/master/client/tides.min.css");
+  //TidePull.appendStyle("https://rawgithub.com/brix4dayz/tidal-client/master/client/tides.min.css");
 
-  //TidePull.appendStyle("./tides.min.css");
+  TidePull.appendStyle("./tides.css");
 
   $('#tideApp').append("\
       <div class=\"container\" id=\"app\">\
-        <div class=\"container\" id=\"portSelection\">\
-          <h3>Choose a port by selecting a map pin:</h3>\
-        </div>\
-        <div id=\"map\"></div>\
-  	  <div id=\"plotter\"><canvas width=\"540\" height=\"510\" id=\"tideCanvas\"></canvas></div>\
-  	  <div class=\"container\" id=\"selectdate\">\
-  		<div class=\"row\" id=\"selectors\">\
-  			<p class=\"btn btn-info btn-sm\" id=\"oneDay\">Tides for one Day</p>\
-  			<p class=\"btn btn-info btn-sm\" id=\"multDay\">Tides for Multiple Days</p>\
-  			<ul class=\"pull-right\" id=\"daters\">\
-  			  <p id=\"promptA\"> Date: <input type=\"click\" id=\"datepickerA\"></p>\
-  			  <p id=\"promptB\"> Start Date: <input type=\"click\" id=\"datepickerB\"></p>\
-  			  <p id=\"promptC\"> End  Date:  <input type=\"click\" id=\"datepickerC\"></p>\
-			  <select id=\"promptD\">Port List</select>\
-  			</ul>\
-  		</div>\
-  		<p class=\"btn btn-sm\" id=\"getTides\">Get Tides</p>\
-  		<p class=\"btn btn-info btn-sm\" id=\"returnBtn\">Select New Location</p>\
-  		<p class=\"copyright\">TidePull © Wren Apps, 2016</p>\
-  	  </div>\
-  	  <p id=\"alerts\"></p>\
+	      <div id=\"top\" height=\"10\"></div>\
+		  <div id=\"map\"></div>\
+		  <div id=\"plotter\"><canvas width=\"540\" height=\"510\" id=\"tideCanvas\"></canvas></div>\
+		  <div class=\"container\" id=\"selectdate\">\
+			<div id=\"selectors\">\
+				 <p id=\"promptA\"> Date: <input type=\"click\" id=\"datepickerA\"></p>\
+				 <select id=\"promptD\">Port List</select>\
+				<button id=\"getTides\">Get Tides</button>\
+				<button id=\"returnBtn\">Select New Location</button>\
+				<p class=\"copyright\">TidePull © Wren Apps, 2016</p>\
+			</div>\
+		  <p id=\"alerts\"></p>\
       </div>");
 
 } else {
@@ -73,7 +64,7 @@ if (!TidePull.mobile) {
       <div id=\"plotter\"><canvas width=\"300\" height=\"250\" id=\"tideCanvas\"></canvas></div>\
       <div class=\"container\" id=\"selectdate\">\
       <div class=\"row\" id=\"selectors\">\
-        <p class=\"btn btn-info btn-sm\" id=\"oneDay\">Tides for one Day</p>\
+        <p class=\"btn\" id=\"oneDay\">Tides for one Day</p>\
         <p class=\"btn btn-info btn-sm\" id=\"multDay\">Tides for Multiple Days</p>\
         <ul class=\"pull-right\" id=\"daters\">\
           <p id=\"promptA\"> Date: <input type=\"click\" id=\"datepickerA\"></p>\
